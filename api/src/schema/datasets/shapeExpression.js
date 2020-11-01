@@ -10,7 +10,9 @@ const shapeExpression = () => {
     
 	    return {
 	    	gene_id: variantData.gene_id,
-	    	mouse_id: variantData.mouse_id,
+	    	genotype: variantData.genotype,
+	    	phenotype: variantData.phenotype,
+	    	time_point: variantData.time_point,	    	
 	    	read_count: variantData.read_count
 	    }
   	}

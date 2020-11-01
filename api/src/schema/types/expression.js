@@ -13,6 +13,7 @@ import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
+  GraphQLList,
  } from 'graphql'
 
 
@@ -23,19 +24,21 @@ export const expressionType = new GraphQLObjectType({
   name: 'RNAExpression',
   fields: {
     gene_id: { type: GraphQLString },
-    mouse_id: { type: GraphQLString },
-    read_count: { type: GraphQLInt },
+    genotype: { type: GraphQLString },
+    phenotype: { type: GraphQLString },
+    time_point: { type: GraphQLString },
+    read_count: { type: new GraphQLList(GraphQLInt) },
   },
 });
 
 export const fetchExpressionDetails = async (ctx, gene_id) => {
 
-  console.log("in here")
+  console.log("in here " + gene_id)
 
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'transcript_expression',
+    index: 'transcript_expression_test',
     type: '_doc',
     size: 1,
     body: {
@@ -48,10 +51,11 @@ export const fetchExpressionDetails = async (ctx, gene_id) => {
     },
   })
 
-  const data = hits.map(shapeExpression())
   //const doc = response.hits._source[0]
-  //console.log(data)
-  //console.log(hits)
+  console.log(hits)
+  
+  const data = hits.map(shapeExpression())
+  console.log(data)
 
 
   //return doc ? doc._source : null // eslint-disable-line no-underscore-dangle

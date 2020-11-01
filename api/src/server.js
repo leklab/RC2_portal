@@ -1,9 +1,6 @@
 //import express from 'express'
-//import compression from 'compression'
-//import { MongoClient } from 'mongodb'
 //import elasticsearch from 'elasticsearch'
 //import graphQLHTTP from 'express-graphql'
-//import cors from 'cors'
 //import Redis from 'ioredis'
 //import serveStatic from 'serve-static'
 //import pcgcSchema from './pcgc_schema'
@@ -14,16 +11,18 @@
 //var graphQLHTTP = require('express-graphql');
 //var { buildSchema } = require('graphql');
 
-
+import { MongoClient } from 'mongodb'
 import elasticsearch from 'elasticsearch'
 import graphQLHTTP from 'express-graphql'
 import express from 'express'
 import pcgcSchema from './schema'
+import cors from 'cors'
+import compression from 'compression'
 
 
 const app = express()
-//app.use(compression())
-//app.use(cors())
+app.use(compression())
+app.use(cors())
 
 // Construct a schema, using GraphQL schema language
 /*
@@ -50,6 +49,11 @@ var root = {
 ;(async () => {
   try {
 
+
+    const mongoClient = await MongoClient.connect("mongodb://localhost:27017/rc2", {
+      useNewUrlParser: true, useUnifiedTopology: true
+    })
+
     const elastic = new elasticsearch.Client({
       apiVersion: '5.6',
       host: "http://localhost:9200",
@@ -63,7 +67,8 @@ var root = {
         graphiql: true,
         context: {
           database: {
-            elastic
+            elastic,
+            mouse_db: mongoClient.db()
           },
         },
       })
