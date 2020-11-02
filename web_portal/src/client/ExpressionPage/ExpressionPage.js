@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Plot from 'react-plotly.js'
 import { request } from "graphql-request"
 
-import { Page, PageHeading, Checkbox } from '@broad/ui'
+import { Page, PageHeading, Checkbox, SegmentedControl } from '@broad/ui'
 import DocumentTitle from '../DocumentTitle'
 
 import { TestTranscript } from './TestTranscript'
@@ -52,6 +52,25 @@ const ConsequenceFiltersWrapper = styled.div`
   margin-bottom: 1em;
 `
 
+/* stylelint-disable block-no-empty */
+const ControlWrapper = styled.span``
+/* stylelint-enable block-no-empty */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+
+    ${ControlWrapper} {
+      margin-bottom: 1em;
+    }
+  }
+`
+
 
 //#5da4d6
 //#ff8f0e
@@ -72,7 +91,6 @@ const base_y_axis = {
   zerolinecolor: 'rgb(255, 255, 255)',
   zerolinewidth: 2,
   exponentformat: 'E',
-  title: 'Raw Read Count',
   rangemode: 'tozero'  
 }
 
@@ -109,7 +127,8 @@ export class ExpressionPage extends Component {
     gene_data: null,
     includeWT: true,
     includeDKO: true,
-    includePKD1_KO: true
+    includePKD1_KO: true,
+    yaxis_scale: 'linear'
   }
 
   fetchExpression = async(gene_id) => {
@@ -256,7 +275,7 @@ export class ExpressionPage extends Component {
 
     const { variantId } = this.props
     const { gene_data } = this.state
-    
+
     console.log("Rendering ExpressionPage")
 
     if(!this.mounted){
@@ -270,11 +289,26 @@ export class ExpressionPage extends Component {
       )
     }
 
-    const layout = {
+
+    var layout = {
       title: `${variantId} Expression`,      
       ...base_layout,
       yaxis: {
-        ...base_y_axis
+        ...base_y_axis,
+        title: 'Raw Read Count'
+      }
+    }
+
+    if(this.state.yaxis_scale === 'log'){
+      layout = {
+        title: `${variantId} Expression`,      
+        ...base_layout,
+        yaxis: {
+          ...base_y_axis,
+          title: 'log2(Raw Read Count)',
+          type: 'log',
+          dtick: Math.log10(2)
+        }
       }
     }
 
@@ -297,6 +331,19 @@ export class ExpressionPage extends Component {
             <MouseGeneInfo gene={gene_data.gene} />
           </GeneInfoColumnWrapper>
         
+        <Wrapper>
+          <SegmentedControl
+            id="y-axis-scale"
+            onChange={scale => {
+                this.setState({ yaxis_scale: scale })
+            }}
+            options={[
+              { label: 'Linear', value: 'linear'},
+              { label: 'Log', value: 'log' }
+            ]}
+            value={this.state.yaxis_scale}
+          />
+        </Wrapper>
 
         <Plot
           data={plot_data}
