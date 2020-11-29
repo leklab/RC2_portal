@@ -6,9 +6,11 @@ import { request } from "graphql-request"
 import { Page, PageHeading, Checkbox, SegmentedControl } from '@broad/ui'
 import DocumentTitle from '../DocumentTitle'
 
-import { TestTranscript } from './TestTranscript'
+import { ModelTranscript } from './ModelTranscript'
 import { GenotypesControl } from './GenotypesControl'
 import MouseGeneInfo from './MouseGeneInfo'
+
+import Tabs from './Tabs'
 
 import styled from 'styled-components'
 
@@ -155,6 +157,15 @@ export class ExpressionPage extends Component {
           	 start
           	 stop
         	 }
+        }
+        transcripts{
+          transcript_id
+          exons{
+            feature_type
+            chrom
+            start
+            stop
+          }
         }
       }      
     }
@@ -380,11 +391,26 @@ export class ExpressionPage extends Component {
           </ConsequenceFiltersWrapper>
         </SettingsWrapper>
 
-        <TestTranscript
+        <ModelTranscript
           gene_name={gene_data.gene.gene_name}
         	strand={gene_data.gene.strand} 
         	composite_transcript={gene_data.gene.composite_transcript}
+          transcripts={gene_data.gene.transcripts}
         />
+        <Tabs>
+          <div label="Transcript">
+            Expression tab1
+          </div>
+          <div label="Exon">
+            Expression tab2
+          </div>
+          <div label="Splice Junction">
+            Expression tab3
+          </div>
+          <div label="Differential Expression">
+            Expression tab4
+          </div>
+        </Tabs>
       </Page>
     )
   }

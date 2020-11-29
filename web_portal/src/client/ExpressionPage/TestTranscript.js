@@ -1,7 +1,7 @@
 import { scaleLinear } from 'd3-scale'
 import { area } from 'd3-shape'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import {json} from 'd3-fetch'
@@ -21,7 +21,18 @@ export class TestTranscript extends Component {
             })
         ),
 
-        filtered_exons: PropTypes.arrayOf(
+        transcripts: PropTypes.arrayOf(
+            PropTypes.arrayOf(
+                PropTypes.shape({
+                    feature_type: PropTypes.string,
+                    chrom: PropTypes.string,
+                    start: PropTypes.number,
+                    stop: PropTypes.number
+                })
+            )
+        ),
+        /*
+        filtered_gene_exons: PropTypes.arrayOf(
             PropTypes.shape({
                 feature_type: PropTypes.string,
                 chrom: PropTypes.string,
@@ -29,6 +40,7 @@ export class TestTranscript extends Component {
                 stop: PropTypes.number
             })
         ),
+        */
 
 		xScale: PropTypes.func
 	}
@@ -46,6 +58,7 @@ export class TestTranscript extends Component {
     }
     */
 
+    /*
 	fetchGeneModel = async(gene_id) => {
 
 		const exons = await json('https://gtexportal.org/rest/v1/dataset/collapsedGeneModelExon?gencodeId=ENSG00000143632.14&datasetId=gtex_v8')	
@@ -54,12 +67,14 @@ export class TestTranscript extends Component {
 		return exons['collapsedGeneModelExon']
 
 	}
+    */
 
 	state = {
     	exons: null
   	}
 
 
+    /*
 	async componentDidMount() {
 
 	    //const exons = await this.fetchGeneModel('genecodeId')
@@ -72,30 +87,7 @@ export class TestTranscript extends Component {
   	componentWillUnmount() {
     	this.mounted = false
   	}
-
-  	/*
-  	parseModelExons(json){
-	    const attr = 'collapsedGeneModelExon';
-	    
-	    if(!json.hasOwnProperty(attr)){
-	        console.error(json);
-	        throw 'Parsing Error: Required json attribute is missing: ' + attr;
-	    }
-	    
-	    // sanity check
-	    ['start', 'end'].forEach((d)=>{
-	        if (!json[attr][0].hasOwnProperty(d)) throw 'Parsing Error: Required json attribute is missing: ' + d;
-	    })
-	    
-	    return json[attr].map((d)=>{
-	        d.chromStart = d.start;
-	        d.chromEnd = d.end;
-	        return d;
-	    })
-
-	}
-	*/
-
+    */
 
   	setXscale(w){
         // concept explained:
@@ -118,10 +110,19 @@ export class TestTranscript extends Component {
 		// const exons = this.state.exons
 		const maxIntronLength = 1000
 
-        const { filtered_exons } = this.props 
+        //const { filtered_gene_exons } = this.props
 
-		console.log("In setXscale")
-		console.log(filtered_exons)
+        //const filtered_exons = this.props.filtered_gene_exons
+
+        
+        const filtered_exons = this.props.composite_transcript.exons.filter(
+            exon => exon.feature_type === 'CDS'
+        )
+        
+
+
+ 		console.log("In setXscale")
+		//console.log(filtered_exons)
 
         filtered_exons.sort((a,b)=>{
             if (Number(a.start) < Number(b.start)) return -1
@@ -161,11 +162,47 @@ export class TestTranscript extends Component {
 
     }
 
-    
- 	renderExons(){
+    renderModel = (exon_type) => {
+        var exonY = 100
+        var transcriptY = 150
 
+        const exonHeight = 15
+        const transcript_space = 50
+
+        console.log("In renderModel")
+
+        if(exon_type === 'gene'){
+            return(<Fragment>
+                        <line x1={0} y1={exonY+(exonHeight/2)} x2={800} y2={exonY+(exonHeight/2)} style={{stroke:'#555f66', strokeWidth: '1px'}} />
+                        {this.renderExons(this.props.composite_transcript.exons,exonY)}
+                        <text x={this.props.xScale.range()[0]} y={exonY + 30}>
+                            {`${this.props.gene_name} Gene Model`}
+                        </text>
+                </Fragment>)
+        }
+        else{
+
+            return this.props.transcripts.map(transcript => {
+                console.log(transcript.exons)
+                transcriptY = transcriptY + transcript_space
+                //console.log("exonY: "+exonY)
+                //this.renderExons(transcript.exons,exonY)
+                return(<Fragment>
+                        <line x1={0} y1={transcriptY+(exonHeight/2)} x2={800} y2={transcriptY+(exonHeight/2)} style={{stroke:'#555f66', strokeWidth: '1px'}} />
+                        {this.renderExons(transcript.exons,transcriptY)}
+                        <text x={this.props.xScale.range()[0]} y={transcriptY + 30}>
+                            {`${transcript.transcript_id}`}
+                        </text>
+
+                        </Fragment>)
+            })
+        }
+    }
+    
+ 	//renderExons(){
+    renderExons = (exons,exonY) => {
 		const exonHeight = 15
-		const exonY = 100
+		//const exonY = 100
 		const minExonWidth = 0
 		const maxIntronLength = 1000
 
@@ -175,16 +212,40 @@ export class TestTranscript extends Component {
 
         //if (this.gene.strand == "+") this.exons.sort((a, b)=>{return Number(a.exonNumber)-Number(b.exonNumber)});
         //else this.exons.sort((a, b)=>{return Number(b.exonNumber)-Number(a.exonNumber)});
-        const { filtered_exons } = this.props 
-        console.log(filtered_exons)
+        //const { filtered_gene_exons } = this.props
+ 
+        //filtered_exons = this.props.filtered_gene_exons
 
-        filtered_exons.sort((a, b)=>{return Number(b.exonNumber)-Number(a.exonNumber)})
+        //console.log(filtered_exons)
+
+        /*
+        const filtered_exons = this.props.composite_transcript.exons.filter(
+            exon => exon.feature_type === 'CDS'
+        )
+        */
+
+        const filtered_exons = exons.filter(
+            exon => exon.feature_type === 'CDS'
+        )
+
+        //filtered_exons.sort((a, b)=>{return Number(b.exonNumber)-Number(a.exonNumber)})
+
+        filtered_exons.sort((a,b)=>{
+            if (Number(a.start) < Number(b.start)) return -1
+            if (Number(a.start) > Number(b.start)) return 1
+            return 0
+        }) 
 
 
        	filtered_exons.forEach((d, i) => {
+            d.length = Number(d.stop) - Number(d.start) + 1
+
             if (i == 0) {
                 d.x = 0
             } else {
+                let nb = filtered_exons[i-1] // the upstream neighbor exon
+                d.intronLength = Number(d.start) - Number(nb.stop) + 1
+
                 d.x = 	filtered_exons[i-1].x + 
                 		filtered_exons[i-1].w + 
                 		this.props.xScale(d.intronLength > maxIntronLength ? maxIntronLength : d.intronLength);
@@ -194,7 +255,7 @@ export class TestTranscript extends Component {
 
  		console.log(filtered_exons)
 
-        //var sortedExons = this.gene_model.sort((a, b)=>{return Number(a.exonNumber)-Number(b.exonNumber)})
+        // var sortedExons = this.gene_model.sort((a, b)=>{return Number(a.exonNumber)-Number(b.exonNumber)})
 
 
           
@@ -222,47 +283,24 @@ export class TestTranscript extends Component {
 		const exonHeight = 15
 		const exonY = 100
 
-
-        //console.log(this.props.composite_transcript)
-        //console.log(this.props.strand)
-
-        this.props.filtered_exons = this.props.composite_transcript.exons.filter(
+        /*
+        this.props.filtered_gene_exons = this.props.composite_transcript.exons.filter(
             exon => exon.feature_type === 'CDS'
         )
-
-        console.log(this.props.filtered_exons)
-
-
-        /*
-		if(!this.mounted){
-	    	console.log("TestTranscript not mounted")
-	      	return(
-	        	<div>
-	        	<p>Loading</p>
-	      		</div>
-      		)
-    	}
         */
-
-        //this.setState({exons: exons})        
-        //console.log(this.state.exons)
+        console.log("Transcript List")
+        console.log(this.props.transcripts)
 
 		this.setXscale(800)
         console.log("After set scale")
-        console.log(this.props.filtered_exons)
-
-        //{this.renderExons()}
-
+        //console.log(this.props.filtered_gene_exons)
 
 		return (
 			<div>
 				<svg height={400} width={820}>
 					<g>
-		  				<line x1={0} y1={exonY+(exonHeight/2)} x2={800} y2={exonY+(exonHeight/2)} style={{stroke:'#555f66', strokeWidth: '1px'}} />
-                        {this.renderExons()}
-                        <text x={this.props.xScale.range()[0] + 5} y={exonY + 40}>
-                            {`${this.props.gene_name} Gene Model`}
-                        </text>
+                        {this.renderModel('gene')}
+                        {this.renderModel('transcript')}                        
 					</g>
 				</svg>
 			</div>
