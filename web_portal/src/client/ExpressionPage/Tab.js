@@ -54,12 +54,22 @@ class Tab extends Component {
       className += " tab-list-active"
     }
   */
+    if(activeTab === label){
+      return (
+        <TabListActive onClick={e => this.props.onClick(e)}>
+          {label}
+        </TabListActive>
+      )
+    }
+    else{
+      return (
+        <TabListItem onClick={e => this.props.onClick(e)}>
+          {label}
+        </TabListItem>
+      )  
+    }
 
-    return (
-      <TabListItem onClick={e => this.props.onClick(e)}>
-        {label}
-      </TabListItem>
-    )
+
   }
 }
 

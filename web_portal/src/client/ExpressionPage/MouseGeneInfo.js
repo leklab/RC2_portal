@@ -10,11 +10,13 @@ const MouseGeneInfo = ({ gene }) => {
     chrom,
     gene_name: geneName,
     gene_id: geneId,
+    mgi_accession,
     start,
     stop,
   } = gene
 
   const ensemblGeneUrl = `http://ensembl.org/Mus_musculus/Gene/Summary?g=${geneId}`
+  const jaxUrl = `http://www.informatics.jax.org/marker/${mgi_accession}`
   const ucscUrl = `http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm10&position=chr${chrom}%3A${start - 1}-${stop}`
 
   //console.log("In MouseGeneInfo")
@@ -26,9 +28,13 @@ const MouseGeneInfo = ({ gene }) => {
       <AttributeList.Item label="Ensembl gene ID">
         <ExternalLink href={ensemblGeneUrl}>{geneId}</ExternalLink>
       </AttributeList.Item>
+      <AttributeList.Item label="MGI ID">
+        <ExternalLink href={jaxUrl}>{mgi_accession}</ExternalLink>
+      </AttributeList.Item>
       <AttributeList.Item label="UCSC Browser">
         <ExternalLink href={ucscUrl}>{`${chrom}:${start}-${stop}`}</ExternalLink>
       </AttributeList.Item>
+
     </AttributeList>
   )
 }
@@ -38,8 +44,9 @@ MouseGeneInfo.propTypes = {
     chrom: PropTypes.string.isRequired,
     gene_name: PropTypes.string.isRequired,
     gene_id: PropTypes.string.isRequired,
+    mgi_accession: PropTypes.string.isRequired,    
     start: PropTypes.number.isRequired,
-    stop: PropTypes.number.isRequired,
+    stop: PropTypes.number.isRequired,    
   }).isRequired,
 }
 

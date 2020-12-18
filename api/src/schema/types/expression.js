@@ -46,7 +46,7 @@ export const fetchExpressionDetails = async (ctx, gene_id) => {
             query_string: {
                 default_field: 'gene_id',
                 query: gene_id
-            }
+            },
         }
     },
   })

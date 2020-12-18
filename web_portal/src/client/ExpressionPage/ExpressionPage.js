@@ -9,6 +9,7 @@ import DocumentTitle from '../DocumentTitle'
 import { ModelTranscript } from './ModelTranscript'
 import { GenotypesControl } from './GenotypesControl'
 import MouseGeneInfo from './MouseGeneInfo'
+import { DiffExpressionTab } from './DiffExpressionTab'
 
 import Tabs from './Tabs'
 
@@ -21,6 +22,11 @@ const ControlSection = styled.div`
     margin-left: 1em;
   }
 `
+const GeneFullName = styled.span`
+  font-size: 0.75em;
+  font-weight: 400;
+`
+
 const GeneInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -78,10 +84,18 @@ const Wrapper = styled.div`
 //#ff8f0e
 //#2ca064
 
+/*
 const GENOTYPE_COLORS = {
-  PKD1_KO: 'rgba(93, 164, 214, 0.5)',
-  DKO: 'rgba(255, 144, 14, 0.5)',
-  WT: 'rgba(44, 160, 101, 0.5)'  
+  PKD1_KO: 'rgba(93, 164, 214, 0.2)',
+  DKO: 'rgba(255, 144, 14, 0.2)',
+  WT: 'rgba(44, 160, 101, 0.2)'  
+}
+*/
+
+const GENOTYPE_COLORS = {
+  PKD1_KO: 'rgb(93, 164, 214)',
+  DKO: 'rgb(255, 144, 14)',
+  WT: 'rgb(44, 160, 101)'  
 }
 
 
@@ -143,6 +157,8 @@ export class ExpressionPage extends Component {
         start
         stop
         strand
+        mgi_accession
+        mgi_description
 
   			expression{
   			   phenotype
@@ -271,6 +287,7 @@ export class ExpressionPage extends Component {
         name: expression_data[i].genotype,
         boxpoints: 'all',
         hoveron: 'points',
+        pointpos: 0,
         marker: {
           color: GENOTYPE_COLORS[expression_data[i].genotype],
           size: 8
@@ -337,80 +354,75 @@ export class ExpressionPage extends Component {
     return (
       <Page>
         <DocumentTitle title="Gene Expression" />
-        <PageHeading>{variantId}</PageHeading>
+        <PageHeading>{variantId} <GeneFullName>{gene_data.gene.mgi_description}</GeneFullName></PageHeading>
           <GeneInfoColumnWrapper>
             <MouseGeneInfo gene={gene_data.gene} />
           </GeneInfoColumnWrapper>
-        
-        <Wrapper>
-          <SegmentedControl
-            id="y-axis-scale"
-            onChange={scale => {
-                this.setState({ yaxis_scale: scale })
-            }}
-            options={[
-              { label: 'Linear', value: 'linear'},
-              { label: 'Log', value: 'log' }
-            ]}
-            value={this.state.yaxis_scale}
-          />
-        </Wrapper>
 
-        <Plot
-          data={plot_data}
-          layout={layout}
-          config={config}
-        />
-
-        {/*<ControlSection>
-          Include Timepoint:
-          <Checkbox
-            id="W7"
-            label="W7"
-            disabled={true}
-          />
-          <Checkbox
-            id="W14"
-            label="W14"
-            disabled={true}
-          />
-          <Checkbox
-            id="W28"
-            label="W28"
-            disabled={true}
-          />
-        </ControlSection>*/}
-        <SettingsWrapper>
-          <ConsequenceFiltersWrapper>
-            <GenotypesControl
-              categorySelections={this.state}
-              id="variant-filter"
-              onChange={this.onGenotypeFilter}
-            />
-
-          </ConsequenceFiltersWrapper>
-        </SettingsWrapper>
-
-        <ModelTranscript
-          gene_name={gene_data.gene.gene_name}
-        	strand={gene_data.gene.strand} 
-        	composite_transcript={gene_data.gene.composite_transcript}
-          transcripts={gene_data.gene.transcripts}
-        />
         <Tabs>
-          <div label="Transcript">
-            Expression tab1
+          <div label="Gene">
+            <Wrapper>
+              <SegmentedControl
+                id="y-axis-scale"
+                onChange={scale => {
+                    this.setState({ yaxis_scale: scale })
+                }}
+                options={[
+                  { label: 'Linear', value: 'linear'},
+                  { label: 'Log', value: 'log' }
+                ]}
+                value={this.state.yaxis_scale}
+              />
+            </Wrapper>
+            <Plot
+              data={plot_data}
+              layout={layout}
+              config={config}
+            />
+            <SettingsWrapper>
+              <ConsequenceFiltersWrapper>
+                <GenotypesControl
+                  categorySelections={this.state}
+                  id="variant-filter"
+                  onChange={this.onGenotypeFilter}
+                />
+
+              </ConsequenceFiltersWrapper>
+            </SettingsWrapper>
           </div>
+
+          <div label="Transcript">
+            <Plot
+              data={plot_data}
+              layout={layout}
+              config={config}
+            />
+            <ModelTranscript
+              gene_name={gene_data.gene.gene_name}
+              strand={gene_data.gene.strand} 
+              composite_transcript={gene_data.gene.composite_transcript}
+              transcripts={gene_data.gene.transcripts}
+            />
+          </div>
+
           <div label="Exon">
-            Expression tab2
+            Exon expression development in progress
           </div>
           <div label="Splice Junction">
-            Expression tab3
+            Splice junction expression development in progress
           </div>
           <div label="Differential Expression">
-            Expression tab4
+            <DiffExpressionTab
+              gene_name={gene_data.gene.gene_name}
+            />
           </div>
         </Tabs>
+
+
+        
+
+
+
       </Page>
     )
   }

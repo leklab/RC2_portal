@@ -11,6 +11,7 @@ import {
 
 import {mouseType, fetchMouseDetails} from './types/mouse'
 import {expressionType, fetchExpressionDetails} from './types/expression'
+import {diffExpressionType, fetchDiffExpressionDetails} from './types/diffExpression'
 
 
 import geneType, {
@@ -47,7 +48,7 @@ The fields below allow for different ways to look up RC2 data.
     },
 
     expression : {
-      description: 'Look up RNA Exoression by gene ID',
+      description: 'Look up RNA Expression by gene ID',
       type: new GraphQLList(expressionType),
 
       args: {
@@ -55,6 +56,18 @@ The fields below allow for different ways to look up RC2 data.
       },
       resolve: (obj, args, ctx) => {
         return fetchExpressionDetails(ctx, args.gene_id)
+      },
+    },
+
+    diff_expression : {
+      description: 'Look up Differential Exoression by timepoint',
+      type: new GraphQLList(diffExpressionType),
+
+      args: {
+        time_point: { type: GraphQLString },
+      },
+      resolve: (obj, args, ctx) => {
+        return fetchDiffExpressionDetails(ctx, args.time_point)
       },
     },
 

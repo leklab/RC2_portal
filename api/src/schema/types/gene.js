@@ -55,9 +55,9 @@ const geneType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLString },
     
-    //omim_description: { type: GraphQLString },
+    mgi_description: { type: GraphQLString },
     gene_id: { type: GraphQLString },
-    //omim_accession: { type: GraphQLString },
+    mgi_accession: { type: GraphQLString },
     
     chrom: { type: GraphQLString },
     strand: { type: GraphQLString },
