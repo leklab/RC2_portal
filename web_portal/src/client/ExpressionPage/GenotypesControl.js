@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-const categories = ['includePKD1_KO', 'includeDKO', 'includeWT']
+const categories = ['includeWT', 'includePKD1_KO', 'includeDKO']
 
 //#5da4d6
 //#ff8f0e

@@ -5,7 +5,9 @@ import Plot from 'react-plotly.js'
 import { request } from "graphql-request"
 import { SegmentedControl } from '@broad/ui'
 
+import throttle from 'lodash.throttle'
 import DETable from '../DEList/DETable'
+import sortGenes from '../DEList/sortGenes'
 
 /* stylelint-disable block-no-empty */
 const ControlWrapper = styled.span``
@@ -49,26 +51,84 @@ const base_layout = {
   },
 
   yaxis: {
-    title: '-log(p value)'
+    title: '-log(p value)',
+    rangemode: 'tozero'
   }
 }
 
 
 
-export class DiffExpressionTab extends Component {
+class DiffExpressionTab extends Component {
 
 	static propTypes = {
         gene_name: PropTypes.string,
 	}
 
-	state = {
-    	expression_data: null,
-        group1: 'WT',
-        group2: 'PKD1_KO',
-        timepoint1: 'W7',
-        timepoint2: 'W7'
-  	}
 
+  constructor(props) {
+    super(props)
+
+    const defaultSortKey = 'pvalue'
+    const defaultSortOrder = 'ascending'
+
+/*    const renderedVariants = sortVariants(
+      mergeExomeAndGenomeData(filterVariants(props.variants, defaultFilter)),
+      {
+        sortKey: defaultSortKey,
+        sortOrder: defaultSortOrder,
+      }
+    )
+*/
+
+    /*
+    this.state = {
+      filter: defaultFilter,
+      hoveredVariant: null,
+      rowIndexLastClickedInNavigator: 0,
+      renderedVariants,
+      visibleVariantWindow: [0, 19],
+    }
+    */
+
+    this.state = {
+      expression_data: null,
+      group1: 'WT',
+      group2: 'PKD1_KO',
+      timepoint1: 'W7',
+      timepoint2: 'W7',
+      sortKey: defaultSortKey,
+      sortOrder: defaultSortOrder,
+      visibleGeneWindow: [0, 14],
+    }
+
+  }
+   onSort = newSortKey => {
+      this.setState(state => {
+        const { expression_data, sortKey } = this.state
+
+        let newSortOrder = 'descending'
+        if (newSortKey === sortKey) {
+          newSortOrder = this.state.sortOrder === 'ascending' ? 'descending' : 'ascending'
+        }
+
+        // Since the filter hasn't changed, sort the currently rendered variants instead
+        // of filtering the input variants.
+        const sortedGenes = sortGenes(expression_data, {
+          sortKey: newSortKey,
+          sortOrder: newSortOrder,
+        })
+
+        return {
+          expression_data: sortedGenes,
+          sortKey: newSortKey,
+          sortOrder: newSortOrder,
+        }
+      })
+    }
+
+    onVisibleRowsChange = throttle(({ startIndex, stopIndex }) => {
+      this.setState({ visibleGeneWindow: [startIndex, stopIndex] })
+    }, 100)
 
     fetchExpression = async(time_point,genotype1,genotype2) => {
         const query = `{
@@ -85,7 +145,7 @@ export class DiffExpressionTab extends Component {
           const expression_data = await request("https://mageik.org/api", query)    
           //console.log(expression_data)
           
-          return expression_data
+          return expression_data.diff_expression
           //this.setState({data: expression_data})
 
         }catch(error){
@@ -128,10 +188,32 @@ export class DiffExpressionTab extends Component {
             mode: 'markers',
             name: 'Test1',
             hoverinfo: 'none',
-            marker: { size: 4 }
+            marker: { size: 4, color: 'rgb(174, 214, 241)'}
         }) 
 
-        console.log(plot_data)
+
+        const window_start = this.state.visibleGeneWindow[0]
+        const window_end = this.state.visibleGeneWindow[1]
+
+        //console.log("start index: "+ window_start)
+        //console.log("stop index: "+ window_end)
+
+
+        for (var i= window_start; i <= window_end; i++){
+          plot_data.push({
+              y: [-1*Math.log10(expression_data[i].pvalue)],  
+              x: [expression_data[i].logfc],
+              type: 'scatter',
+              mode: 'markers',
+              hoverinfo: 'name',
+              name: expression_data[window_start].gene_symbol,
+              hoveron: 'points',
+              marker: { size: 6, color: 'rgb(44, 160, 101)'}
+          }) 
+
+        }
+
+        //console.log(plot_data)
 
         return plot_data
 
@@ -152,10 +234,9 @@ export class DiffExpressionTab extends Component {
         }
 
         //console.log(this.state.expression_data.diff_expression)        
-        const plot_data = this.filterData(this.state.expression_data.diff_expression)
-
-        const sortKey = 'pvalue'
-        const sortOrder = 'ascending'
+        const plot_data = this.filterData(this.state.expression_data)
+        //console.log("Visible Window Changed")
+        //console.log(this.state.visibleGeneWindow)
 
 		return (
         <div>
@@ -164,11 +245,14 @@ export class DiffExpressionTab extends Component {
                 id="group1-selection"
                 onChange={ g1 => {
                     this.setState({ group1: g1 })
+                    if(g1 === 'PKD1_KO'){
+                      this.setState({ group2: 'DKO' })
+                    }
                 }}
                 options={[
                   { label: 'WT', value: 'WT'},
                   { label: 'PKD1_KO', value: 'PKD1_KO' },
-                  { label: 'DKO', value: 'DKO' },                  
+                  { label: 'DKO', value: 'DKO', disabled: true },                  
                 ]}
                 value={this.state.group1}
               />
@@ -180,8 +264,8 @@ export class DiffExpressionTab extends Component {
                 }}
                 options={[
                   { label: 'W7', value: 'W7'},
-                  { label: 'W14', value: 'W14' },
-                  { label: 'W28', value: 'W28' },                  
+                  { label: 'W14', value: 'W14', disabled: true },
+                  { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
                 value={this.state.timepoint1}
               />
@@ -193,8 +277,8 @@ export class DiffExpressionTab extends Component {
                     this.setState({ group2: g2 })
                 }}
                 options={[
-                  { label: 'WT', value: 'WT'},
-                  { label: 'PKD1_KO', value: 'PKD1_KO' },
+                  { label: 'WT', value: 'WT', disabled: true},
+                  { label: 'PKD1_KO', value: 'PKD1_KO', disabled: !(this.state.group1 === 'WT') },
                   { label: 'DKO', value: 'DKO' },                  
                 ]}
                 value={this.state.group2}
@@ -207,8 +291,8 @@ export class DiffExpressionTab extends Component {
                 }}
                 options={[
                   { label: 'W7', value: 'W7'},
-                  { label: 'W14', value: 'W14' },
-                  { label: 'W28', value: 'W28' },                  
+                  { label: 'W14', value: 'W14', disabled: true },
+                  { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
                 value={this.state.timepoint2}
               />              
@@ -222,9 +306,11 @@ export class DiffExpressionTab extends Component {
             <br /><br /><br />
 
             <DETable
-              sortKey={sortKey}
-              sortOrder={sortOrder}
-              de_genes={this.state.expression_data.diff_expression}
+              sortKey={this.state.sortKey}
+              sortOrder={this.state.sortOrder}
+              de_genes={this.state.expression_data}
+              onRequestSort={this.onSort}
+              onVisibleRowsChange = {this.onVisibleRowsChange}
             />
 
         </div>
@@ -232,4 +318,4 @@ export class DiffExpressionTab extends Component {
 	}
 }
 
-
+export default DiffExpressionTab

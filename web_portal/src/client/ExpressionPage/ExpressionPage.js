@@ -9,8 +9,7 @@ import DocumentTitle from '../DocumentTitle'
 import { ModelTranscript } from './ModelTranscript'
 import { GenotypesControl } from './GenotypesControl'
 import MouseGeneInfo from './MouseGeneInfo'
-import { DiffExpressionTab } from './DiffExpressionTab'
-
+import DiffExpressionTab from './DiffExpressionTab'
 import Tabs from './Tabs'
 
 import styled from 'styled-components'

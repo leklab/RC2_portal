@@ -67,14 +67,14 @@ const App = () => (
           <Route exact path="/terms" component={TermsPage} />
           <Route exact path="/contact" component={ContactPage} />
           <Route exact path="/faq" component={FAQPage} />
-          {/*<Route
+          <Route
             exact
             path="/awesome"
             render={({ location }) => {
               const params = queryString.parse(location.search)
               return <SearchRedirectPage query={params.query} />
             }}
-          />*/}
+          />
           <Route component={PageNotFoundPage} />
         </Switch>
       </ErrorBoundary>

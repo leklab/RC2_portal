@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
 import { Grid } from './Grid'
+import Link from '../Link'
 
 const NoVariants = styled.div`
   display: flex;
@@ -57,6 +58,11 @@ const columns = [
     grow: 0,
     isSortable: false,
     minWidth: 200,
+    render: (de_gene, key) => (
+    <Link className="grid-cell-content" target="_blank" to={`/awesome?query=${de_gene.gene_symbol}`}>
+    {de_gene.gene_symbol}
+    </Link>
+    ),
   },
   {
     key: 'logfc',
