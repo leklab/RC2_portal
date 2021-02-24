@@ -188,7 +188,7 @@ export class ExpressionPage extends Component {
     ` 
     try{
       console.log("Requesting data")
-      const gene_data = await request("http://35.209.10.92:4000", query)    
+      const gene_data = await request("https://mageik.org/api", query)    
       console.log(gene_data)
       
       return gene_data

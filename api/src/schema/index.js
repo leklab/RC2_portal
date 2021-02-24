@@ -65,9 +65,11 @@ The fields below allow for different ways to look up RC2 data.
 
       args: {
         time_point: { type: GraphQLString },
+        genotype1: { type: GraphQLString },
+        genotype2: { type: GraphQLString }        
       },
       resolve: (obj, args, ctx) => {
-        return fetchDiffExpressionDetails(ctx, args.time_point)
+        return fetchDiffExpressionDetails(ctx, args.time_point, args.genotype1, args.genotype2)
       },
     },
 

@@ -78,8 +78,8 @@ var root = {
       res.json({})
     })
 
-    app.listen(4000, () => {
-      console.log(`Listening on 4000`)
+    app.listen(4001, () => {
+      console.log(`Listening on 4001`)
     })
   } catch (error) {
     console.log(error)

@@ -5,6 +5,8 @@ import Plot from 'react-plotly.js'
 import { request } from "graphql-request"
 import { SegmentedControl } from '@broad/ui'
 
+import DETable from '../DEList/DETable'
+
 /* stylelint-disable block-no-empty */
 const ControlWrapper = styled.span``
 /* stylelint-enable block-no-empty */
@@ -68,9 +70,9 @@ export class DiffExpressionTab extends Component {
   	}
 
 
-    fetchExpression = async(time_point) => {
+    fetchExpression = async(time_point,genotype1,genotype2) => {
         const query = `{
-          diff_expression(time_point: "${time_point}"){
+          diff_expression(time_point: "${time_point}", genotype1: "${genotype1}", genotype2: "${genotype2}"){
             gene_symbol
             pvalue
             logfc
@@ -80,8 +82,8 @@ export class DiffExpressionTab extends Component {
         try{
           console.log("Requesting data")
           console.log(query)
-          const expression_data = await request("http://35.209.10.92:4000", query)    
-          console.log(expression_data)
+          const expression_data = await request("https://mageik.org/api", query)    
+          //console.log(expression_data)
           
           return expression_data
           //this.setState({data: expression_data})
@@ -96,7 +98,7 @@ export class DiffExpressionTab extends Component {
     async componentDidMount() {
         //componentDidMount() {
 
-        const expression_data = await this.fetchExpression("W7")
+        const expression_data = await this.fetchExpression("W7","WT","KO")
 
         this.mounted = true
         this.setState({expression_data: expression_data})
@@ -149,8 +151,11 @@ export class DiffExpressionTab extends Component {
             displayModeBar: false
         }
 
-        
+        //console.log(this.state.expression_data.diff_expression)        
         const plot_data = this.filterData(this.state.expression_data.diff_expression)
+
+        const sortKey = 'pvalue'
+        const sortOrder = 'ascending'
 
 		return (
         <div>
@@ -208,12 +213,20 @@ export class DiffExpressionTab extends Component {
                 value={this.state.timepoint2}
               />              
             </Wrapper>
-
+            <br />
             <Plot
               data={plot_data}
               layout={base_layout}
               config={config}
             />
+            <br /><br /><br />
+
+            <DETable
+              sortKey={sortKey}
+              sortOrder={sortOrder}
+              de_genes={this.state.expression_data.diff_expression}
+            />
+
         </div>
 		)
 	}
