@@ -93,7 +93,7 @@ class DiffExpressionTab extends Component {
     this.state = {
       expression_data: null,
       group1: 'WT',
-      group2: 'PKD1_KO',
+      group2: 'KO',
       timepoint1: 'W7',
       timepoint2: 'W7',
       sortKey: defaultSortKey,
@@ -158,10 +158,12 @@ class DiffExpressionTab extends Component {
     async componentDidMount() {
         //componentDidMount() {
 
-        const expression_data = await this.fetchExpression("W7","WT","KO")
+        const expression_data = await this.fetchExpression("W7",this.state.group1,this.state.group2)
 
         this.mounted = true
         this.setState({expression_data: expression_data})
+
+        console.log("In componentDidMount")
 
     }
 
@@ -169,6 +171,22 @@ class DiffExpressionTab extends Component {
         this.mounted = false
     }
 
+    updateData = (expression_data) => {
+
+        const defaultSortKey = 'pvalue'
+        const defaultSortOrder = 'ascending'
+
+        const sortedGenes = sortGenes(expression_data, {
+          sortKey: defaultSortKey,
+          sortOrder: defaultSortOrder,
+        })
+        
+        this.setState({ sortKey: defaultSortKey,
+                        sortOrder: defaultSortOrder,
+                        visibleGeneWindow: [0, 14],
+                        expression_data: sortedGenes})
+
+    }
 
     filterData = (expression_data) => {
         let plot_data = []  
@@ -238,6 +256,7 @@ class DiffExpressionTab extends Component {
         //console.log("Visible Window Changed")
         //console.log(this.state.visibleGeneWindow)
 
+
 		return (
         <div>
             <Wrapper>
@@ -245,13 +264,33 @@ class DiffExpressionTab extends Component {
                 id="group1-selection"
                 onChange={ g1 => {
                     this.setState({ group1: g1 })
-                    if(g1 === 'PKD1_KO'){
+
+                    console.log("Loading new data")
+                    console.log("group1: "+this.state.group1)
+                    console.log("g1 group1: "+g1)                    
+                    console.log("group2: "+this.state.group2)
+
+                    if(g1 === 'KO'){
                       this.setState({ group2: 'DKO' })
+                      this.fetchExpression("W7",g1,'DKO').then( data =>{
+                          //this.setState({expression_data: data})
+                          this.updateData(data)
+                        })
                     }
+                    else{
+                      this.fetchExpression("W7",g1,this.state.group2).then( data =>{
+                          //this.setState({expression_data: data})
+                          this.updateData(data)
+                        })
+                    }
+                    
+                    //const expression_data = await this.fetchExpression("W7",this.state.group1,this.state.group2)
+                    //this.setState({expression_data: expression_data})                    
+                    
                 }}
                 options={[
                   { label: 'WT', value: 'WT'},
-                  { label: 'PKD1_KO', value: 'PKD1_KO' },
+                  { label: 'PKD1_KO', value: 'KO' },
                   { label: 'DKO', value: 'DKO', disabled: true },                  
                 ]}
                 value={this.state.group1}
@@ -275,10 +314,24 @@ class DiffExpressionTab extends Component {
                 id="group2-selection"
                 onChange={ g2 => {
                     this.setState({ group2: g2 })
+
+                    console.log("Loading new data")
+                    console.log("group1: "+this.state.group1)
+                    console.log("group2: "+this.state.group2)
+                    console.log("g2 group2: "+g2)
+
+                    // const expression_data = await this.fetchExpression("W7",this.state.group1,this.state.group2)
+                    //this.setState({expression_data: expression_data})
+
+                    this.fetchExpression("W7",this.state.group1,g2).then( data =>{
+                        //this.setState({expression_data: data})
+                        this.updateData(data)
+                      })
+
                 }}
                 options={[
                   { label: 'WT', value: 'WT', disabled: true},
-                  { label: 'PKD1_KO', value: 'PKD1_KO', disabled: !(this.state.group1 === 'WT') },
+                  { label: 'PKD1_KO', value: 'KO', disabled: !(this.state.group1 === 'WT') },
                   { label: 'DKO', value: 'DKO' },                  
                 ]}
                 value={this.state.group2}
@@ -312,7 +365,7 @@ class DiffExpressionTab extends Component {
               onRequestSort={this.onSort}
               onVisibleRowsChange = {this.onVisibleRowsChange}
             />
-
+            <br /><br /><br />
         </div>
 		)
 	}
