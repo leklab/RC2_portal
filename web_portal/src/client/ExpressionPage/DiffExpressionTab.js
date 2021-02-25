@@ -289,9 +289,9 @@ class DiffExpressionTab extends Component {
                     
                 }}
                 options={[
-                  { label: 'WT', value: 'WT'},
-                  { label: 'PKD1_KO', value: 'KO' },
-                  { label: 'DKO', value: 'DKO', disabled: true },                  
+                  { label: 'Normal', value: 'WT'},
+                  { label: 'Pkd1_KO', value: 'KO' },
+                  { label: 'Pkd1_Kif3a_KO', value: 'DKO', disabled: true },                  
                 ]}
                 value={this.state.group1}
               />
@@ -330,9 +330,9 @@ class DiffExpressionTab extends Component {
 
                 }}
                 options={[
-                  { label: 'WT', value: 'WT', disabled: true},
-                  { label: 'PKD1_KO', value: 'KO', disabled: !(this.state.group1 === 'WT') },
-                  { label: 'DKO', value: 'DKO' },                  
+                  { label: 'Normal', value: 'WT', disabled: true},
+                  { label: 'Pkd1_KO', value: 'KO', disabled: !(this.state.group1 === 'WT') },
+                  { label: 'Pkd1_Kif3a_KO', value: 'DKO' },                  
                 ]}
                 value={this.state.group2}
               />

@@ -17,9 +17,9 @@ const categoryColors = {
 }
 
 const categoryLabels = {
-  includePKD1_KO: 'PKD1_KO',
-  includeDKO: 'DKO',
-  includeWT: 'WT'
+  includePKD1_KO: 'Pkd1_KO',
+  includeDKO: 'Pkd1_Kif3a_KO',
+  includeWT: 'Normal'
 }
 
 // The max-width styles here are based on the filter settings
