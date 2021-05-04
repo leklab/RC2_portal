@@ -116,10 +116,27 @@ class NavBar extends Component {
         <NavBarWrapper>
           <LogoWrapper>
             <Link to="/" onClick={this.closeMenu}>
-              <Logo>Metabolism And Gene Expression In Kidney</Logo>
+              <Logo>MAGEIK</Logo>
             </Link>
             <ToggleMenuButton onClick={this.toggleMenu}>☰</ToggleMenuButton>
           </LogoWrapper>
+          <Menu isExpanded={isExpanded}>
+            <li>
+              <Link to="/diffExpression" onClick={this.closeMenu}>
+                Gene Expression
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" onClick={this.closeMenu}>
+                Metabolic Flux
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" onClick={this.closeMenu}>
+                Metabolomics
+              </Link>
+            </li>
+          </Menu>
           <Searchbox id="navbar-search" width="320px" />
           <Menu isExpanded={isExpanded}>
             <li>
@@ -127,16 +144,16 @@ class NavBar extends Component {
                 About
               </Link>
             </li>
-            {/* <li>
+            <li>
               <Link to="/downloads" onClick={this.closeMenu}>
                 Downloads
               </Link>
-            </li> */}
-            <li>
+            </li>
+            { /*<li>
               <Link to="/terms" onClick={this.closeMenu}>
                 Terms
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/contact" onClick={this.closeMenu}>
                 Contact

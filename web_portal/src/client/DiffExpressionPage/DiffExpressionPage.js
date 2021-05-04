@@ -3,11 +3,12 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 import Plot from 'react-plotly.js'
 import { request } from "graphql-request"
-import { SegmentedControl } from '@broad/ui'
+import { Page, PageHeading, SegmentedControl } from '@broad/ui'
+import DocumentTitle from '../DocumentTitle'
 
 import throttle from 'lodash.throttle'
-import DETable from '../DEList/DETable'
-import sortGenes from '../DEList/sortGenes'
+import DETable from './DEList/DETable'
+import sortGenes from './DEList/sortGenes'
 
 /* stylelint-disable block-no-empty */
 const ControlWrapper = styled.span``
@@ -58,11 +59,13 @@ const base_layout = {
 
 
 
-class DiffExpressionTab extends Component {
+class DiffExpressionPage extends Component {
 
+  /*
 	static propTypes = {
         gene_name: PropTypes.string,
 	}
+  */
 
 
   constructor(props) {
@@ -258,7 +261,9 @@ class DiffExpressionTab extends Component {
 
 
 		return (
-        <div>
+        <Page>
+        <DocumentTitle title="Differential Gene Expression" />
+        <PageHeading>Differential Gene Expression</PageHeading>
             <Wrapper>
               Group 1: &nbsp; &nbsp; <SegmentedControl
                 id="group1-selection"
@@ -366,9 +371,9 @@ class DiffExpressionTab extends Component {
               onVisibleRowsChange = {this.onVisibleRowsChange}
             />
             <br /><br /><br />
-        </div>
+        </Page>
 		)
 	}
 }
 
-export default DiffExpressionTab
+export default DiffExpressionPage

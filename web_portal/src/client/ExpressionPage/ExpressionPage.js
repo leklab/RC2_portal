@@ -9,7 +9,7 @@ import DocumentTitle from '../DocumentTitle'
 import { ModelTranscript } from './ModelTranscript'
 import { GenotypesControl } from './GenotypesControl'
 import MouseGeneInfo from './MouseGeneInfo'
-import DiffExpressionTab from './DiffExpressionTab'
+// import DiffExpressionTab from './DiffExpressionTab'
 import Tabs from './Tabs'
 
 import styled from 'styled-components'
@@ -391,11 +391,13 @@ export class ExpressionPage extends Component {
           </div>
 
           <div label="Transcript">
+
             <Plot
               data={plot_data}
               layout={layout}
               config={config}
             />
+
             <ModelTranscript
               gene_name={gene_data.gene.gene_name}
               strand={gene_data.gene.strand} 
@@ -410,11 +412,12 @@ export class ExpressionPage extends Component {
           <div label="Splice Junction">
             Splice junction expression development in progress
           </div>
-          <div label="Differential Expression">
+
+          {/* <div label="Differential Expression">
             <DiffExpressionTab
               gene_name={gene_data.gene.gene_name}
             />
-          </div>
+          </div> */}
         </Tabs>
 
 

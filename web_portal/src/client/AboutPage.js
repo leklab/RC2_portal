@@ -54,9 +54,19 @@ const FundingSourceList = styled(ContributorList)`
 export default () => (
   <InfoPage>
     <DocumentTitle title="About MAGEIK" />
-    <PageHeading id="about-sfari">About MAGEIK</PageHeading>
+    <PageHeading id="about-mageik">About Metabolism And Gene Expression in Kidney (MAGEIK)</PageHeading>
     <p>
-   	Placeholder text
+
+    Autosomal dominant polycystic kidney disease (ADPKD) is the most common cause of inherited kidney disease; it causes the kidneys to enlarge and 
+    stop working and many times patients need either dialysis or transplantation to replace the kidneys’ function. This research program is designed 
+    to use innovative mouse models based on inactivation of the same genes as cause the human disease in combination with other recent technological 
+    advances to create large, comprehensive data sets of the specific changes in gene expression and metabolic function in the subset of cells in the 
+    kidney that will give rise to the cysts that ultimately destroy kidney function. These data sets will be made publicly available so that the maximum 
+    number of investigators can make use of them in their efforts to understand how this disease occurs and, more importantly, to develop the therapies 
+    that will slow this disease without causing unnecessary side effects to patients.
+
+
+
     </p>
 
   </InfoPage>

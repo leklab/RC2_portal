@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
 import { Grid } from './Grid'
-import Link from '../Link'
+import Link from '../../Link'
 
 const NoVariants = styled.div`
   display: flex;
