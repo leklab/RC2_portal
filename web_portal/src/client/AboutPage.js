@@ -17,45 +17,18 @@ const Credits = styled.div`
   }
 `
 
-const CreditsSection = styled.div`
-  width: calc(${props => props.width} - 15px);
-
-  @media (max-width: 992px) {
-    width: 100%;
-  }
+const PageContent = styled.div`
+  width: 80%;
+  text-align: justify;
 `
 
-const ContributorList = styled.ul`
-  list-style-type: none;
-  padding-left: 0;
-  line-height: 1.5;
-
-  ul {
-    padding-left: 20px;
-    margin: 0.5em 0;
-    list-style-type: none;
-  }
-`
-
-const PrincipalInvestigatorList = styled(ContributorList)`
-  columns: 2;
-
-  @media (max-width: 992px) {
-    columns: 1;
-  }
-`
-
-const FundingSourceList = styled(ContributorList)`
-  li {
-    margin-bottom: 1em;
-  }
-`
 
 export default () => (
   <InfoPage>
     <DocumentTitle title="About MAGEIK" />
     <PageHeading id="about-mageik">About Metabolism And Gene Expression in Kidney (MAGEIK)</PageHeading>
-    <p>
+    
+    <PageContent>
 
     Autosomal dominant polycystic kidney disease (ADPKD) is the most common cause of inherited kidney disease; it causes the kidneys to enlarge and 
     stop working and many times patients need either dialysis or transplantation to replace the kidneys’ function. This research program is designed 
@@ -65,9 +38,26 @@ export default () => (
     number of investigators can make use of them in their efforts to understand how this disease occurs and, more importantly, to develop the therapies 
     that will slow this disease without causing unnecessary side effects to patients.
 
+    {/* <h3>Mouse Models</h3>
 
 
-    </p>
+    <br />
+    <h3>Data Generation</h3>
+
+
+    <br />
+    <h3>Data Processing</h3>
+
+    <br /> */}
+    <h3>Web development</h3>
+    The website was custom designed for this project and led by <ExternalLink href="https://medicine.yale.edu/profile/monkol_lek">Monkol Lek</ExternalLink>. 
+    The open source code for this website is available on <ExternalLink href="https://github.com/leklab/PKD_portal"> github.</ExternalLink>  Please report any issues or suggestions on the <ExternalLink href="https://github.com/leklab/PKD_portal/issues">issues section</ExternalLink> on the github repository.
+    <br />
+    <h3>Funding</h3>
+    This work was supported by the following grant from the National Institute of Diabetes and Digestive and Kidney Diseases 
+    (NIDDK)/National Institutes of Health (NIH): RC2 DK120534.
+
+    </PageContent>
 
   </InfoPage>
 )

@@ -30,6 +30,10 @@ const AnchorWrapper = styled.span`
     }
   }
 `
+const PageContent = styled.div`
+  width: 80%;
+  text-align: justify;
+`
 
 const withAnchor = Component => {
   const ComposedComponent = ({ children, id }) => (
@@ -68,7 +72,13 @@ export default () => (
   <InfoPage>
     <DocumentTitle title="FAQ" />
     <PageHeading>Frequently Asked Questions</PageHeading>
-    Place holder text.
+    <PageContent>
+      Q. What are the different ways of exploring gene expression? <br /><br />
+      A. Gene expression can be accessed in three different ways. <br />
+      (1) Through the search bar on the <ExternalLink href="/">landing/home page</ExternalLink> <br />
+      (2) Using the search bar on the Navigation bar on the top of each page <br />
+      (3) Selecting from the table of <ExternalLink href="/diffExpression">differential expressed genes</ExternalLink>
+    </PageContent>
 
   </InfoPage>
 )

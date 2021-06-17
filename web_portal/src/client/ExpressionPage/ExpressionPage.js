@@ -388,6 +388,7 @@ export class ExpressionPage extends Component {
 
               </ConsequenceFiltersWrapper>
             </SettingsWrapper>
+            <br /><br />
           </div>
 
           <div label="Transcript">

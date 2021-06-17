@@ -26,6 +26,8 @@ import NavBar from './NavBar'
 
 import { ExpressionPage } from './ExpressionPage/ExpressionPage'
 import DiffExpressionPage from './DiffExpressionPage/DiffExpressionPage'
+import MetabolicFluxPage from './MetabolicFluxPage/MetabolicFluxPage'
+import MetabolomicsPage from './MetabolomicsPage/MetabolomicsPage'
 
 
 const MainPanel = styled.div`
@@ -68,7 +70,10 @@ const App = () => (
           <Route exact path="/terms" component={TermsPage} />
           <Route exact path="/contact" component={ContactPage} />
           <Route exact path="/faq" component={FAQPage} />
-          <Route exact path="/diffExpression" component={DiffExpressionPage} />          
+          <Route exact path="/diffExpression" component={DiffExpressionPage} />
+          <Route exact path="/metabolicflux" component={MetabolicFluxPage} />
+          <Route exact path="/metabolomics" component={MetabolomicsPage} />
+
           <Route
             exact
             path="/awesome"

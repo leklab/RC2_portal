@@ -39,8 +39,14 @@ export default () => (
     <DocumentTitle />
     <HeadingContainer>
       {/* <GnomadHeading width="60%" /> */}
-      <SubHeading>Metabolism And Gene Expression In Kidney</SubHeading>
-      <Searchbox width="100%" />
+      <SubHeading>Metabolism And Gene Expression In Kidney (MAGEIK)</SubHeading>
+      <Searchbox width="80%" />
+      <p>
+        Examples - Gene:{' '}
+        <Link to="/expression/Pkd2">
+          Pkd2
+        </Link>
+        </p>
     </HeadingContainer>
 
     <p>

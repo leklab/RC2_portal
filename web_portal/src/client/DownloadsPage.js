@@ -49,13 +49,29 @@ const DownloadSection = styled.div`
   }
 `
 
+const PageContent = styled.div`
+  width: 80%;
+  text-align: justify;
+`
+
 export default () => (
   <InfoPage>
     <DocumentTitle title="Downloads" />
     <Wrapper>
       <DownloadSection>
         <PageHeading id="download-mageik">Downloads</PageHeading>
-        Place holder text
+        <PageContent>
+        Data freezes will be made available via a link to NCBI <ExternalLink href="https://www.ncbi.nlm.nih.gov/geo">Gene Expression Omnibus (GEO)</ExternalLink> link and 
+         direct links to raw sequencing data will use NCBI <ExternalLink href="https://www.ncbi.nlm.nih.gov/sra">Sequence Read Archive (SRA)</ExternalLink>. Additional 
+         meta data, interim processed data and information on methods will be made availabe on this download page. 
+         <br />
+         <h3>Data freezes</h3>
+         Not available.
+         <br />
+         <h3>Additional Data and Information</h3>
+         Not available.
+         <br />
+         </PageContent>
       </DownloadSection>
     </Wrapper>
   </InfoPage>

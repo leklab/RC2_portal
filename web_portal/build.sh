@@ -22,3 +22,5 @@ export NODE_ENV=${NODE_ENV:-"production"}
 webpack --config=./config/webpack.config.client.js
 
 webpack --config=./config/webpack.config.server.js
+
+cp ./images/Metabolic_Flux.png ./dist/public

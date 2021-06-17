@@ -38,7 +38,7 @@ export const fetchExpressionDetails = async (ctx, gene_id) => {
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'transcript_expression_test',
+    index: 'transcript_expression',
     type: '_doc',
     size: 1,
     body: {

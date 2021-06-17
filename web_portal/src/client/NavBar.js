@@ -127,12 +127,12 @@ class NavBar extends Component {
               </Link>
             </li>
             <li>
-              <Link to="/about" onClick={this.closeMenu}>
+              <Link to="/metabolicflux" onClick={this.closeMenu}>
                 Metabolic Flux
               </Link>
             </li>
             <li>
-              <Link to="/about" onClick={this.closeMenu}>
+              <Link to="/metabolomics" onClick={this.closeMenu}>
                 Metabolomics
               </Link>
             </li>
