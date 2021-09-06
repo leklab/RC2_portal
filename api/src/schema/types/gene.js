@@ -114,7 +114,7 @@ const geneType = new GraphQLObjectType({
       type: new GraphQLList(expressionType),
 
       resolve: (obj, args, ctx) => 
-        fetchExpressionDetails(ctx, obj.gene_name)
+        fetchExpressionDetails(ctx, obj.gene_id)
     },
 
     exons: {

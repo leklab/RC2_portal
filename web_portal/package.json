@@ -68,7 +68,9 @@
     "react-plotly.js": ">0.0.0",
     "plotly.js": ">0.0.0",
     "d3-fetch": "^2.0.0",
-    "ramda": "^0.24.1"
+    "ramda": "^0.24.1",
+    "css-loader": "^5.0.2",
+    "style-loader": "^2.0.0"
   },
   "scripts": {
     "lint:css": "stylelint './**/*.js'",

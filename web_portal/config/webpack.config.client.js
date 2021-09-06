@@ -40,6 +40,10 @@ const config = {
         },
       },
       {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
         test: /\.(gif|jpg|png)$/,
         use: {
           loader: 'file-loader',

@@ -13,7 +13,7 @@ const shapeExpression = () => {
 	    	genotype: variantData.genotype,
 	    	phenotype: variantData.phenotype,
 	    	time_point: variantData.time_point,	    	
-	    	read_count: variantData.read_count
+	    	rpkm: variantData.rpkm
 	    }
   	}
 

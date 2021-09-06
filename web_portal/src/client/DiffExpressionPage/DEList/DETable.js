@@ -53,14 +53,14 @@ const truncateNum = (row, key) => {
 
 const columns = [
   {
-    key: 'gene_symbol',
-    heading: 'Ensembl Gene ID',
+    key: 'gene_name',
+    heading: 'Gene',
     grow: 0,
     isSortable: false,
     minWidth: 200,
     render: (de_gene, key) => (
-    <Link className="grid-cell-content" target="_blank" to={`/awesome?query=${de_gene.gene_symbol}`}>
-    {de_gene.gene_symbol}
+    <Link className="grid-cell-content" target="_blank" to={`/awesome?query=${de_gene.gene_name}`}>
+    {de_gene.gene_name}
     </Link>
     ),
   },
@@ -132,7 +132,7 @@ class DETable extends PureComponent {
         onRequestSort={onRequestSort}
         onVisibleRowsChange={onVisibleRowsChange}
         ref={this.grid}
-        rowKey={de_gene => de_gene.gene_symbol}
+        rowKey={de_gene => de_gene.gene_name}
         sortKey={sortKey}
         sortOrder={sortOrder}
       />

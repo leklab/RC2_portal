@@ -9,10 +9,12 @@ const shapeDiffExpression = () => {
     console.log(variantData)
     
 	    return {
-	    	gene_symbol: variantData.gene_symbol,
+	    	gene_id: variantData.gene_id,
+	    	gene_name: variantData.gene_name,
 	    	genotype1: variantData.genotype1,
 	    	genotype2: variantData.genotype2,
 	    	time_point: variantData.time_point,	    	
+	    	sex: variantData.sex,	    	
 	    	logfc: variantData.logfc,
 	    	pvalue: variantData.pvalue
 

@@ -136,7 +136,7 @@ class DiffExpressionPage extends Component {
     fetchExpression = async(time_point,genotype1,genotype2) => {
         const query = `{
           diff_expression(time_point: "${time_point}", genotype1: "${genotype1}", genotype2: "${genotype2}"){
-            gene_symbol
+            gene_name
             pvalue
             logfc
           }
@@ -227,7 +227,7 @@ class DiffExpressionPage extends Component {
               type: 'scatter',
               mode: 'markers',
               hoverinfo: 'name',
-              name: expression_data[window_start].gene_symbol,
+              name: expression_data[i].gene_name,
               hoveron: 'points',
               marker: { size: 6, color: 'rgb(44, 160, 101)'}
           }) 
@@ -308,7 +308,7 @@ class DiffExpressionPage extends Component {
                 }}
                 options={[
                   { label: 'W7', value: 'W7'},
-                  { label: 'W14', value: 'W14', disabled: true },
+                  { label: 'W10', value: 'W10', disabled: true },
                   { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
                 value={this.state.timepoint1}
@@ -349,7 +349,7 @@ class DiffExpressionPage extends Component {
                 }}
                 options={[
                   { label: 'W7', value: 'W7'},
-                  { label: 'W14', value: 'W14', disabled: true },
+                  { label: 'W10', value: 'W10', disabled: true },
                   { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
                 value={this.state.timepoint2}

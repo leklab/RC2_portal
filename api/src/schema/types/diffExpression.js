@@ -13,10 +13,12 @@ import shapeDiffExpression from '../datasets/shapeDiffExpression'
 export const diffExpressionType = new GraphQLObjectType({
   name: 'DiffExpression',
   fields: {
-    gene_symbol: { type: GraphQLString },
+    gene_id: { type: GraphQLString },
+    gene_name: { type: GraphQLString },
     genotype1: { type: GraphQLString },
     genotype2: { type: GraphQLString },
     time_point: { type: GraphQLString },
+    sex: { type: GraphQLString },
     logfc: { type: GraphQLFloat },
     pvalue: { type: GraphQLFloat },
   },
@@ -29,7 +31,7 @@ export const fetchDiffExpressionDetails = async (ctx, time_point,genotype1,genot
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'diff_expression_test',
+    index: 'diff_expression_v2',
     type: '_doc',
     size: 1,
     body: {

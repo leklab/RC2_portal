@@ -163,7 +163,7 @@ export class ExpressionPage extends Component {
   			   phenotype
   	       genotype
   	       time_point
-  	       read_count
+  	       rpkm
   	    }
   	    composite_transcript{
         	 exons{
@@ -187,6 +187,7 @@ export class ExpressionPage extends Component {
     ` 
     try{
       console.log("Requesting data")
+      console.log(query)
       const gene_data = await request("https://mageik.org/api", query)    
       console.log(gene_data)
       
@@ -255,11 +256,59 @@ export class ExpressionPage extends Component {
     
   }
 
+
   filterData = (expression_data) => {
     let plot_data = []
     
     //const expression_data = gene_data.gene.expression
+
+    //console.log("Before sorting")
+    //console.log(expression_data)
+
     
+    expression_data.sort((a,b) => {
+
+      if(a.time_point != b.time_point){
+        if(a.time_point == 'W7' && b.time_point == 'W10'){
+          return -1
+        }
+        else if(a.time_point == 'W10' && b.time_point == 'W7'){
+          return 1
+        }
+        else{
+          return 0
+        }
+      }
+      else{
+        if(a.genotype == 'WT' && b.genotype == 'PKD1_KO'){
+          return -1
+        }
+        else if(a.genotype == 'WT' && b.genotype == 'DKO'){
+          return -1
+        }
+        else if(b.genotype == 'WT' && a.genotype == 'DKO'){
+          return 1
+        }
+        else if(b.genotype == 'WT' && a.genotype == 'PKD1_KO'){
+          return 1
+        }
+        else if(a.genotype == 'PKD1_KO' && b.genotype == 'DKO'){
+          return -1
+        }
+        else if(a.genotype == 'DKO' && b.genotype == 'PKD1_KO'){
+          return 1
+        }
+        else{
+          return 0
+        }
+
+      }
+    })
+    
+    //console.log("After sorting")
+    //console.log(expression_data)
+    
+
     for (var i = 0; i < expression_data.length; i++){
 
 
@@ -273,14 +322,14 @@ export class ExpressionPage extends Component {
 
       let x_data = []
       
-      for(var j= 0; j < expression_data[i].read_count.length; j++){
+      for(var j= 0; j < expression_data[i].rpkm.length; j++){
         x_data.push(expression_data[i].time_point)
       }
 
       // console.log(x_data)  
       
       plot_data.push({
-        y: expression_data[i].read_count,  
+        y: expression_data[i].rpkm,  
         x: x_data,
         type: 'box',
         name: expression_data[i].genotype,
@@ -322,7 +371,7 @@ export class ExpressionPage extends Component {
       ...base_layout,
       yaxis: {
         ...base_y_axis,
-        title: 'Raw Read Count'
+        title: 'RPKM'
       }
     }
 
@@ -332,7 +381,7 @@ export class ExpressionPage extends Component {
         ...base_layout,
         yaxis: {
           ...base_y_axis,
-          title: 'log2(Raw Read Count)',
+          title: 'log2(RPKM)',
           type: 'log',
           dtick: Math.log10(2)
         }
