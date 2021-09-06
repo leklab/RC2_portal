@@ -34,7 +34,7 @@ const Wrapper = styled.div`
 const base_layout = {
   title: 'Differential Gene Expression',
   autosize: false,
-  width: 800,
+  width: 650,
   height: 500,
   margin: {
     l: 60,
@@ -356,6 +356,8 @@ class DiffExpressionPage extends Component {
               />              
             </Wrapper>
             <br />
+
+            <Wrapper>
             <Plot
               data={plot_data}
               layout={base_layout}
@@ -369,8 +371,11 @@ class DiffExpressionPage extends Component {
               de_genes={this.state.expression_data}
               onRequestSort={this.onSort}
               onVisibleRowsChange = {this.onVisibleRowsChange}
-            />
+            />            
             <br /><br /><br />
+            </Wrapper>
+
+
         </Page>
 		)
 	}

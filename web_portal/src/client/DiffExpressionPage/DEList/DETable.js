@@ -57,7 +57,7 @@ const columns = [
     heading: 'Gene',
     grow: 0,
     isSortable: false,
-    minWidth: 200,
+    minWidth: 150,
     render: (de_gene, key) => (
     <Link className="grid-cell-content" target="_blank" to={`/awesome?query=${de_gene.gene_name}`}>
     {de_gene.gene_name}
