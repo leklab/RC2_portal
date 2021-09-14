@@ -99,6 +99,7 @@ class DiffExpressionPage extends Component {
       group2: 'KO',
       timepoint1: 'W7',
       timepoint2: 'W7',
+      sex: 'M',
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
       visibleGeneWindow: [0, 14],
@@ -300,7 +301,7 @@ class DiffExpressionPage extends Component {
                 ]}
                 value={this.state.group1}
               />
-              &nbsp; &nbsp; Timepoint 1: &nbsp; &nbsp;
+              &nbsp; &nbsp; Timepoint: &nbsp; &nbsp;
               <SegmentedControl
                 id="timepoint1-selection"
                 onChange={ t1 => {
@@ -312,6 +313,18 @@ class DiffExpressionPage extends Component {
                   { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
                 value={this.state.timepoint1}
+              />
+              &nbsp; &nbsp; Sex: &nbsp; &nbsp;
+              <SegmentedControl
+                id="sex-selection"
+                onChange={ s => {
+                    this.setState({ sex: s })
+                }}
+                options={[
+                  { label: 'Male', value: 'M'},
+                  { label: 'Female', value: 'F'}
+                ]}
+                value={this.state.sex}
               />
             </Wrapper>
             <Wrapper>  
@@ -341,19 +354,6 @@ class DiffExpressionPage extends Component {
                 ]}
                 value={this.state.group2}
               />
-              &nbsp; &nbsp; Timepoint 2: &nbsp; &nbsp;
-              <SegmentedControl
-                id="timepoint2-selection"
-                onChange={ t2 => {
-                    this.setState({ timepoint2: t2 })
-                }}
-                options={[
-                  { label: 'W7', value: 'W7'},
-                  { label: 'W10', value: 'W10', disabled: true },
-                  { label: 'W28', value: 'W28', disabled: true },                  
-                ]}
-                value={this.state.timepoint2}
-              />              
             </Wrapper>
             <br />
 
@@ -363,8 +363,7 @@ class DiffExpressionPage extends Component {
               layout={base_layout}
               config={config}
             />
-            <br /><br /><br />
-
+            <br />
             <DETable
               sortKey={this.state.sortKey}
               sortOrder={this.state.sortOrder}
@@ -372,7 +371,6 @@ class DiffExpressionPage extends Component {
               onRequestSort={this.onSort}
               onVisibleRowsChange = {this.onVisibleRowsChange}
             />            
-            <br /><br /><br />
             </Wrapper>
 
 
