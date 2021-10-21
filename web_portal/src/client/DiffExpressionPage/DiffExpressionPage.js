@@ -32,7 +32,6 @@ const Wrapper = styled.div`
 
 
 const base_layout = {
-  title: 'Differential Gene Expression',
   autosize: false,
   width: 650,
   height: 500,
@@ -97,8 +96,7 @@ class DiffExpressionPage extends Component {
       expression_data: null,
       group1: 'WT',
       group2: 'KO',
-      timepoint1: 'W7',
-      timepoint2: 'W7',
+      timepoint: 'W7',
       sex: 'M',
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
@@ -134,9 +132,9 @@ class DiffExpressionPage extends Component {
       this.setState({ visibleGeneWindow: [startIndex, stopIndex] })
     }, 100)
 
-    fetchExpression = async(time_point,genotype1,genotype2) => {
+    fetchExpression = async(time_point,genotype1,genotype2,sex) => {
         const query = `{
-          diff_expression(time_point: "${time_point}", genotype1: "${genotype1}", genotype2: "${genotype2}"){
+          diff_expression(time_point: "${time_point}", genotype1: "${genotype1}", genotype2: "${genotype2}", sex: "${sex}"){
             gene_name
             pvalue
             logfc
@@ -162,7 +160,7 @@ class DiffExpressionPage extends Component {
     async componentDidMount() {
         //componentDidMount() {
 
-        const expression_data = await this.fetchExpression("W7",this.state.group1,this.state.group2)
+        const expression_data = await this.fetchExpression(this.state.timepoint,this.state.group1,this.state.group2, this.state.sex)
 
         this.mounted = true
         this.setState({expression_data: expression_data})
@@ -261,6 +259,30 @@ class DiffExpressionPage extends Component {
         //console.log(this.state.visibleGeneWindow)
 
 
+    var timepoint_str = ""
+    var sex_str = ""
+
+    if(this.state.timepoint == 'W7'){
+      timepoint_str = "Week 7"
+    }
+    else if(this.state.timepoint == 'W10'){
+      timepoint_str = "Week 10"
+    }
+
+    if(this.state.sex == 'M'){
+      sex_str = "Male"
+    }
+    else if(this.state.sex == 'F'){
+      sex_str = "Female"
+    }
+
+    const title_str = `${this.state.group1} vs ${this.state.group2} - ${sex_str}, ${timepoint_str}`
+
+    var layout = {
+      title: `${title_str}`,      
+      ...base_layout
+    }
+
 		return (
         <Page>
         <DocumentTitle title="Differential Gene Expression" />
@@ -278,13 +300,13 @@ class DiffExpressionPage extends Component {
 
                     if(g1 === 'KO'){
                       this.setState({ group2: 'DKO' })
-                      this.fetchExpression("W7",g1,'DKO').then( data =>{
+                      this.fetchExpression(this.state.timepoint,g1,'DKO',this.state.sex).then( data =>{
                           //this.setState({expression_data: data})
                           this.updateData(data)
                         })
                     }
                     else{
-                      this.fetchExpression("W7",g1,this.state.group2).then( data =>{
+                      this.fetchExpression(this.state.timepoint,g1,this.state.group2,this.state.sex).then( data =>{
                           //this.setState({expression_data: data})
                           this.updateData(data)
                         })
@@ -303,22 +325,33 @@ class DiffExpressionPage extends Component {
               />
               &nbsp; &nbsp; Timepoint: &nbsp; &nbsp;
               <SegmentedControl
-                id="timepoint1-selection"
-                onChange={ t1 => {
-                    this.setState({ timepoint1: t1 })
+                id="timepoint-selection"
+                onChange={ t => {
+                    this.setState({ timepoint: t })
+
+                    this.fetchExpression(t,this.state.group1,this.state.group2,this.state.sex).then( data =>{
+                        //this.setState({expression_data: data})
+                        this.updateData(data)
+                      })
+
+
                 }}
                 options={[
                   { label: 'W7', value: 'W7'},
-                  { label: 'W10', value: 'W10', disabled: true },
+                  { label: 'W10', value: 'W10'},
                   { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
-                value={this.state.timepoint1}
+                value={this.state.timepoint}
               />
               &nbsp; &nbsp; Sex: &nbsp; &nbsp;
               <SegmentedControl
                 id="sex-selection"
                 onChange={ s => {
                     this.setState({ sex: s })
+                    this.fetchExpression(this.state.timepoint,this.state.group1,this.state.group2,s).then( data =>{
+                        //this.setState({expression_data: data})
+                        this.updateData(data)
+                      })
                 }}
                 options={[
                   { label: 'Male', value: 'M'},
@@ -341,7 +374,7 @@ class DiffExpressionPage extends Component {
                     // const expression_data = await this.fetchExpression("W7",this.state.group1,this.state.group2)
                     //this.setState({expression_data: expression_data})
 
-                    this.fetchExpression("W7",this.state.group1,g2).then( data =>{
+                    this.fetchExpression("W7",this.state.group1,g2,this.state.sex).then( data =>{
                         //this.setState({expression_data: data})
                         this.updateData(data)
                       })
@@ -360,10 +393,9 @@ class DiffExpressionPage extends Component {
             <Wrapper>
             <Plot
               data={plot_data}
-              layout={base_layout}
+              layout={layout}
               config={config}
             />
-            <br />
             <DETable
               sortKey={this.state.sortKey}
               sortOrder={this.state.sortOrder}
@@ -372,7 +404,8 @@ class DiffExpressionPage extends Component {
               onVisibleRowsChange = {this.onVisibleRowsChange}
             />            
             </Wrapper>
-
+            <br />
+            Note: Positive Log(Fold Change) indicates up-regulation in Group1
 
         </Page>
 		)

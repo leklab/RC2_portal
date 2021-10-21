@@ -24,7 +24,7 @@ export const diffExpressionType = new GraphQLObjectType({
   },
 });
 
-export const fetchDiffExpressionDetails = async (ctx, time_point,genotype1,genotype2) => {
+export const fetchDiffExpressionDetails = async (ctx, time_point,genotype1,genotype2,sex) => {
 
   console.log("in here " + time_point)
 
@@ -41,6 +41,7 @@ export const fetchDiffExpressionDetails = async (ctx, time_point,genotype1,genot
             {term: { time_point: time_point}},
             {term: { genotype1: genotype1}},
             {term: { genotype2: genotype2}},
+            {term: { sex: sex}},
             { range: { [`pvalue`]: { lt: 0.05 } } },
           ]
         },
