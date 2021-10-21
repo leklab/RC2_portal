@@ -26,6 +26,7 @@ import NavBar from './NavBar'
 
 import { ExpressionPage } from './ExpressionPage/ExpressionPage'
 import DiffExpressionPage from './DiffExpressionPage/DiffExpressionPage'
+import TrapGenePage from './TrapGenePage/TrapGenePage'
 import MetabolicFluxPage from './MetabolicFluxPage/MetabolicFluxPage'
 import MetabolomicsPage from './MetabolomicsPage/MetabolomicsPage'
 
@@ -70,6 +71,7 @@ const App = () => (
           <Route exact path="/terms" component={TermsPage} />
           <Route exact path="/contact" component={ContactPage} />
           <Route exact path="/faq" component={FAQPage} />
+          <Route exact path="/TrapGenes" component={TrapGenePage} />
           <Route exact path="/diffExpression" component={DiffExpressionPage} />
           <Route exact path="/metabolicflux" component={MetabolicFluxPage} />
           <Route exact path="/metabolomics" component={MetabolomicsPage} />

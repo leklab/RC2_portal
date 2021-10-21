@@ -122,6 +122,11 @@ class NavBar extends Component {
           </LogoWrapper>
           <Menu isExpanded={isExpanded}>
             <li>
+              <Link to="/trapGenes" onClick={this.closeMenu}>
+                TRAP Genes
+              </Link>
+            </li>
+            <li>
               <Link to="/diffExpression" onClick={this.closeMenu}>
                 Gene Expression
               </Link>
