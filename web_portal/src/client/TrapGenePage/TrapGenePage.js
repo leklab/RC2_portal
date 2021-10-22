@@ -8,7 +8,7 @@ import DocumentTitle from '../DocumentTitle'
 
 //import throttle from 'lodash.throttle'
 import DETable from './DEList/DETable'
-//import sortGenes from './DEList/sortGenes'
+import sortGenes from './DEList/sortGenes'
 
 /* stylelint-disable block-no-empty */
 const ControlWrapper = styled.span``
@@ -42,8 +42,8 @@ class TrapGenePage extends Component {
   constructor(props) {
     super(props)
 
-    const defaultSortKey = 'wt_expr'
-    const defaultSortOrder = 'ascending'
+    const defaultSortKey = 'sko_expr'
+    const defaultSortOrder = 'descending'
 
     
     this.state = {
@@ -68,15 +68,14 @@ class TrapGenePage extends Component {
         // Since the filter hasn't changed, sort the currently rendered variants instead
         // of filtering the input variants.
 
-        /*
-        const sortedGenes = sortGenes(expression_data, {
+        
+        const sorted_gene_trap_data = sortGenes(gene_trap_data, {
           sortKey: newSortKey,
           sortOrder: newSortOrder,
         })
-        */
-
+        
         return {
-          gene_trap_data: gene_trap_data,
+          gene_trap_data: sorted_gene_trap_data,
           sortKey: newSortKey,
           sortOrder: newSortOrder,
         }
@@ -118,10 +117,12 @@ class TrapGenePage extends Component {
     async componentDidMount() {
         //componentDidMount() {
 
-        const gene_trap_data = await this.fetchTrapGenes('W10','M')
+        const gene_trap_data = await this.fetchTrapGenes(this.state.timepoint,this.state.sex)
 
         this.mounted = true
-        this.setState({gene_trap_data: gene_trap_data})
+        //this.setState({gene_trap_data: gene_trap_data})
+        this.updateData(gene_trap_data)
+
         console.log("In componentDidMount")
 
     }
@@ -130,6 +131,24 @@ class TrapGenePage extends Component {
         this.mounted = false
     }
 
+
+    updateData = (gene_trap_data) => {
+
+        const defaultSortKey = 'sko_expr'
+        const defaultSortOrder = 'descending'
+
+        
+        const sorted_gene_trap_data = sortGenes(gene_trap_data, {
+          sortKey: defaultSortKey,
+          sortOrder: defaultSortOrder,
+        })
+        
+
+        this.setState({ sortKey: defaultSortKey,
+                        sortOrder: defaultSortOrder,
+                        gene_trap_data: sorted_gene_trap_data})
+
+    }
 
 	render() {
 
@@ -145,7 +164,41 @@ class TrapGenePage extends Component {
         <Page>
         <DocumentTitle title="Trap Genes" />
         <PageHeading>Trap Genes</PageHeading>
+            <Wrapper>
+              &nbsp; &nbsp; Timepoint: &nbsp; &nbsp;
+              <SegmentedControl
+                id="timepoint-selection"
+                onChange={ t => {
+                    this.setState({ timepoint: t })
+                    this.fetchTrapGenes(t,this.state.sex).then( data =>{
+                        this.updateData(data)
+                      })
+                }}
+                options={[
+                  { label: 'W7', value: 'W7'},
+                  { label: 'W10', value: 'W10'},
+                  { label: 'W28', value: 'W28', disabled: true },                  
+                ]}
+                value={this.state.timepoint}
+              />
+              &nbsp; &nbsp; Sex: &nbsp; &nbsp;
+              <SegmentedControl
+                id="sex-selection"
+                onChange={ s => {
+                    this.setState({ sex: s })
+                    this.fetchTrapGenes(this.state.timepoint,s).then( data =>{
+                        this.updateData(data)
+                      })
+                }}
+                options={[
+                  { label: 'Male', value: 'M'},
+                  { label: 'Female', value: 'F'}
+                ]}
+                value={this.state.sex}
+              />
+            </Wrapper>
         
+        <br /><br />
         <DETable
           sortKey={this.state.sortKey}
           sortOrder={this.state.sortOrder}

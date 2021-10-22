@@ -16,9 +16,13 @@ const makeStringComparator = key => makeComparator(key, (v1, v2) => v1.localeCom
 const makeNumericComparator = key => makeComparator(key, (v1, v2) => v1 - v2)
 
 const comparators = {
-  //consequence: makeStringComparator('consequence'),
-  pvalue: makeNumericComparator('pvalue'),
-  logfc: makeNumericComparator('logfc'),
+  sig_code: makeStringComparator('sig_code'),
+  direction: makeStringComparator('direction'),
+  sko_expr: makeNumericComparator('sko_expr'),
+  wt_expr: makeNumericComparator('wt_expr'),
+  dko_expr: makeNumericComparator('dko_expr'),
+
+
 }
 
 const sortGenes = (genes, { sortKey, sortOrder }) => {
