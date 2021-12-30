@@ -25,8 +25,8 @@ const PageContent = styled.div`
 
 export default () => (
   <InfoPage>
-    <DocumentTitle title="About MAGEIK" />
-    <PageHeading id="about-mageik">About Metabolism And Gene Expression in Kidney (MAGEIK)</PageHeading>
+    <DocumentTitle title="About MAGICK" />
+    <PageHeading id="about-magick">About Metabolism And Genomics in Cystic Kidney (MAGICK)</PageHeading>
     
     <PageContent>
 

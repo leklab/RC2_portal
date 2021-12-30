@@ -59,7 +59,7 @@ export default () => (
     <DocumentTitle title="Downloads" />
     <Wrapper>
       <DownloadSection>
-        <PageHeading id="download-mageik">Downloads</PageHeading>
+        <PageHeading id="download-magick">Downloads</PageHeading>
         <PageContent>
         Data freezes will be made available via a link to NCBI <ExternalLink href="https://www.ncbi.nlm.nih.gov/geo">Gene Expression Omnibus (GEO)</ExternalLink> link and 
          direct links to raw sequencing data will use NCBI <ExternalLink href="https://www.ncbi.nlm.nih.gov/sra">Sequence Read Archive (SRA)</ExternalLink>. Additional 

@@ -39,7 +39,7 @@ export default () => (
     <DocumentTitle />
     <HeadingContainer>
       {/* <GnomadHeading width="60%" /> */}
-      <SubHeading>Metabolism And Gene Expression In Kidney (MAGEIK)</SubHeading>
+      <SubHeading>Metabolism And Genomics in Cystic Kidney (MAGICK)</SubHeading>
       <Searchbox width="80%" />
       <p>
         Examples - Gene:{' '}
