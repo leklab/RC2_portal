@@ -514,7 +514,42 @@ export class ExpressionPage extends Component {
             <MouseGeneInfo gene={gene_data.gene} />
           </GeneInfoColumnWrapper>
 
-        <Tabs>
+            <Wrapper>
+              <SegmentedControl
+                id="y-axis-scale"
+                onChange={scale => {
+                    this.setState({ yaxis_scale: scale })
+                }}
+                options={[
+                  { label: 'Linear', value: 'linear'},
+                  { label: 'Log', value: 'log' }
+                ]}
+                value={this.state.yaxis_scale}
+              />
+            </Wrapper>
+            <Plot
+              data={plot_data}
+              layout={layout}
+              config={config}
+            />
+            <SettingsWrapper>
+              <ConsequenceFiltersWrapper>
+                <GenotypesControl
+                  categorySelections={this.state}
+                  id="genotypes-filter"
+                  onChange={this.onGenotypeFilter}
+                />
+                <SexControl
+                  categorySelections={this.state}
+                  id="sex-filter"
+                  onChange={this.onGenotypeFilter}
+                />
+              </ConsequenceFiltersWrapper>
+            </SettingsWrapper>
+            <br /><br />
+
+
+        {/*<Tabs>
           <div label="Gene">
             <Wrapper>
               <SegmentedControl
@@ -574,12 +609,12 @@ export class ExpressionPage extends Component {
             Splice junction expression development in progress
           </div>
 
-          {/* <div label="Differential Expression">
+           <div label="Differential Expression">
             <DiffExpressionTab
               gene_name={gene_data.gene.gene_name}
             />
-          </div> */}
-        </Tabs>
+          </div>
+        </Tabs>*/}
 
 
         

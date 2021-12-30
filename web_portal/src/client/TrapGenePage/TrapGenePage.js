@@ -10,6 +10,10 @@ import DocumentTitle from '../DocumentTitle'
 import DETable from './DEList/DETable'
 import sortGenes from './DEList/sortGenes'
 
+import { SignificanceControl } from './SignificanceControl'
+import { DirectionControl } from './DirectionControl'
+
+
 /* stylelint-disable block-no-empty */
 const ControlWrapper = styled.span``
 /* stylelint-enable block-no-empty */
@@ -29,6 +33,25 @@ const Wrapper = styled.div`
     }
   }
 `
+
+const SettingsWrapper = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`
+
+const ConsequenceFiltersWrapper = styled.div`
+  margin-bottom: 1em;
+`
+
+
 
 class TrapGenePage extends Component {
 
@@ -51,14 +74,116 @@ class TrapGenePage extends Component {
       timepoint: 'W10',
       sex: 'M',
       sortKey: defaultSortKey,
-      sortOrder: defaultSortOrder
+      sortOrder: defaultSortOrder,
+      includeUp: true,
+      includeDown: true,
+      includeFDR005: true,
+      includeFDR025: true
     }
     
   }
+
+
+  includeDataPoint = (data) => {
+    return this.includeDirection(data) && this.includeSignificance(data)    
+  }
+
+
+  includeDirection = (data) => {
+    if(this.state.includeUp && data.direction.localeCompare("Up") == 0){
+      return true
+    }
+    else if(this.state.includeDown && data.direction.localeCompare("Down") == 0){
+      return true
+    }
+    else{
+      return false
+    }
+  }
+
+  includeSignificance = (data) => {
+    if(this.state.includeFDR005 && data.sig_code.localeCompare("FDR005") == 0){
+      //console.log("Include FDR005 data point")
+      //console.log(data)
+      return true
+    }
+    else if(this.state.includeFDR025 && data.sig_code.localeCompare("FDR025") == 0){
+      //console.log("Include FDR025 data point")
+      //console.log(data)
+      return true
+    }
+    else{
+      return false
+    }
+  }
+
+
+   onFilter = (state) => {
+      console.log("In Filter")
+      console.log(state)
+      this.setState(state)
+
+      /*
+      const {gene_trap_data, display_trap_data,sortKey, sortOrder} = this.state
+      var filteredData = []
+
+      console.log("Before filtering")
+      console.log(gene_trap_data)
+
+      for (var i = 0; i < gene_trap_data.length; i++){
+        if(this.includeDataPoint(gene_trap_data[i])){
+          filteredData.push(gene_trap_data[i])
+        }
+      }
+
+      console.log("After filtering")
+      console.log(filteredData)
+      
+      
+      const sorted_gene_trap_data = sortGenes(filteredData, {
+        sortKey: sortKey,
+        sortOrder: sortOrder,
+      })
+      
+
+      this.setState({display_trap_data: sorted_gene_trap_data})
+      */
+    }
+
+   filterData = (trap_data) => {
+      var filteredData = []
+      const {sortKey, sortOrder} = this.state
+
+
+      console.log("Before filtering")
+      console.log(trap_data)
+
+      for (var i = 0; i < trap_data.length; i++){
+        if(this.includeDataPoint(trap_data[i])){
+          filteredData.push(trap_data[i])
+        }
+      }
+
+      console.log("After filtering")
+      console.log(filteredData)
+      
+      
+      const sorted_gene_trap_data = sortGenes(filteredData, {
+        sortKey: sortKey,
+        sortOrder: sortOrder,
+      })
+      
+      return sorted_gene_trap_data
+
+      //this.setState({display_trap_data: sorted_gene_trap_data})
+      
+    }
+
+
   
    onSort = newSortKey => {
       this.setState(state => {
-        const { gene_trap_data, sortKey } = this.state
+        const { display_trap_data, sortKey } = this.state
 
         let newSortOrder = 'descending'
         if (newSortKey === sortKey) {
@@ -69,13 +194,12 @@ class TrapGenePage extends Component {
         // of filtering the input variants.
 
         
-        const sorted_gene_trap_data = sortGenes(gene_trap_data, {
+        const sorted_gene_trap_data = sortGenes(display_trap_data, {
           sortKey: newSortKey,
           sortOrder: newSortOrder,
-        })
-        
+        })        
         return {
-          gene_trap_data: sorted_gene_trap_data,
+          display_trap_data: sorted_gene_trap_data,
           sortKey: newSortKey,
           sortOrder: newSortOrder,
         }
@@ -146,24 +270,31 @@ class TrapGenePage extends Component {
 
         this.setState({ sortKey: defaultSortKey,
                         sortOrder: defaultSortOrder,
+                        display_trap_data: [...sorted_gene_trap_data],
                         gene_trap_data: sorted_gene_trap_data})
 
     }
 
+
+
 	render() {
 
-        if(!this.mounted){
-          console.log("DiffExpressionTab not mounted")
-          return(            
-            <p>Loading</p>
-          )
-        }
+      if(!this.mounted){
+        console.log("DiffExpressionTab not mounted")
+        return(            
+          <p>Loading</p>
+        )
+      }
+    console.log("In Render and new state")
+    console.log(this.state)
+
+    const display_data = this.filterData(this.state.display_trap_data)
 
 
 		return (
         <Page>
-        <DocumentTitle title="Trap Genes" />
-        <PageHeading>Trap Genes</PageHeading>
+        <DocumentTitle title="TRAO Genes" />
+        <PageHeading>TRAP Overlap Genes</PageHeading>
             <Wrapper>
               &nbsp; &nbsp; Timepoint: &nbsp; &nbsp;
               <SegmentedControl
@@ -177,7 +308,6 @@ class TrapGenePage extends Component {
                 options={[
                   { label: 'W7', value: 'W7'},
                   { label: 'W10', value: 'W10'},
-                  { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
                 value={this.state.timepoint}
               />
@@ -202,10 +332,28 @@ class TrapGenePage extends Component {
         <DETable
           sortKey={this.state.sortKey}
           sortOrder={this.state.sortOrder}
-          de_genes={this.state.gene_trap_data}
+          de_genes={display_data}
           onRequestSort={this.onSort}
           onVisibleRowsChange = {this.onVisibleRowsChange}
         />            
+
+        <SettingsWrapper>
+          <ConsequenceFiltersWrapper>
+            <DirectionControl
+              categorySelections={this.state}
+              id="direction-filter"
+              onChange={this.onFilter}
+            />
+            <SignificanceControl
+              categorySelections={this.state}
+              id="significance-filter"
+              onChange={this.onFilter}
+            />            
+          </ConsequenceFiltersWrapper>
+        </SettingsWrapper>
+        <br /><br />
+
+
 
         </Page>
 		)
