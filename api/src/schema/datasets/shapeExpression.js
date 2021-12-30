@@ -12,6 +12,7 @@ const shapeExpression = () => {
 	    	gene_id: variantData.gene_id,
 	    	genotype: variantData.genotype,
 	    	phenotype: variantData.phenotype,
+	    	sex: variantData.sex,
 	    	time_point: variantData.time_point,	    	
 	    	rpkm: variantData.rpkm
 	    }

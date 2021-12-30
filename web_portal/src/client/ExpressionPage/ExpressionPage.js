@@ -8,6 +8,8 @@ import DocumentTitle from '../DocumentTitle'
 
 import { ModelTranscript } from './ModelTranscript'
 import { GenotypesControl } from './GenotypesControl'
+import { SexControl } from './SexControl'
+
 import MouseGeneInfo from './MouseGeneInfo'
 // import DiffExpressionTab from './DiffExpressionTab'
 import Tabs from './Tabs'
@@ -143,6 +145,9 @@ export class ExpressionPage extends Component {
     includeWT: true,
     includeDKO: true,
     includePKD1_KO: true,
+    includeM: true,
+    includeF: true,
+    combineSex: false,
     yaxis_scale: 'linear'
   }
 
@@ -163,6 +168,7 @@ export class ExpressionPage extends Component {
   			   phenotype
   	       genotype
   	       time_point
+           sex
   	       rpkm
   	    }
   	    composite_transcript{
@@ -204,7 +210,7 @@ export class ExpressionPage extends Component {
 
   onGenotypeFilter = (state) => {
     console.log("In Genotype Filter")
-    //console.log(state)
+    console.log(state)
     this.setState(state)
   }
 
@@ -238,6 +244,10 @@ export class ExpressionPage extends Component {
   }
 
   includeDataPoint = (data) => {
+    return this.includeGenotype(data) && this.includeSex(data)    
+  }
+
+  includeGenotype = (data) => {
 
     if(this.state.includePKD1_KO && data.genotype.localeCompare("PKD1_KO") == 0){
       return true
@@ -250,12 +260,58 @@ export class ExpressionPage extends Component {
     else if(this.state.includeWT && data.genotype.localeCompare("WT") == 0){
       return true
     }
+
     else{
       return false
     }
     
   }
 
+  includeSex = (data) => {
+
+    if(this.state.includeM && data.sex.localeCompare("M") == 0){
+      return true
+    }
+
+    else if(this.state.includeF && data.sex.localeCompare("F") == 0){
+      return true
+    }
+
+    else if(data.sex.localeCompare("") == 0){
+      return true
+    }
+
+    else{
+      return false
+    }
+    
+  }
+
+  combineSexData = (expression_data) => {
+    var combined_data = []
+    var j = 0
+
+
+    console.log("In combineSexData")
+    // massive assumption that the data is sorted!
+    // currently male first then female
+    for (var i = 0; i < expression_data.length; i+= 2){
+      combined_data[j] = {...expression_data[i]}
+      //combined_data[j] = expression_data[i]
+      combined_data[j].sex = ''
+
+      // concat female rpkm data with the male data
+      combined_data[j].rpkm = expression_data[i].rpkm.concat(expression_data[i+1].rpkm)
+      j++
+      
+    }
+
+    console.log("After combining sex data")
+    console.log(combined_data)
+
+    return combined_data
+
+  }
 
   filterData = (expression_data) => {
     let plot_data = []
@@ -279,6 +335,44 @@ export class ExpressionPage extends Component {
           return 0
         }
       }
+      
+      else if(a.genotype != b.genotype){
+        if(a.genotype == 'WT' && b.genotype == 'PKD1_KO'){
+          return -1
+        }
+        else if(a.genotype == 'WT' && b.genotype == 'DKO'){
+          return -1
+        }
+        else if(b.genotype == 'WT' && a.genotype == 'DKO'){
+          return 1
+        }
+        else if(b.genotype == 'WT' && a.genotype == 'PKD1_KO'){
+          return 1
+        }
+        else if(a.genotype == 'PKD1_KO' && b.genotype == 'DKO'){
+          return -1
+        }
+        else if(a.genotype == 'DKO' && b.genotype == 'PKD1_KO'){
+          return 1
+        }
+        else{
+          return 0
+        }
+        
+      }
+      else{
+        if(a.sex == 'M' && b.sex == 'F'){
+          return -1
+        }
+        else if(a.sex == 'F' && b.sex == 'M'){
+          return 1
+        }
+        else{
+          return 0
+        }        
+      }
+
+      /*
       else{
         if(a.genotype == 'WT' && b.genotype == 'PKD1_KO'){
           return -1
@@ -301,13 +395,22 @@ export class ExpressionPage extends Component {
         else{
           return 0
         }
-
-      }
+        
+      }*/
     })
     
     //console.log("After sorting")
     //console.log(expression_data)
     
+    
+    if (this.state.includeM && this.state.includeF && this.state.combineSex){
+      expression_data = this.combineSexData(expression_data)
+
+    }
+    
+
+    console.log("Before plotting/filtering")
+    console.log(expression_data)
 
     for (var i = 0; i < expression_data.length; i++){
 
@@ -326,22 +429,26 @@ export class ExpressionPage extends Component {
         x_data.push(expression_data[i].time_point)
       }
 
-      // console.log(x_data)  
-      
       plot_data.push({
-        y: expression_data[i].rpkm,  
-        x: x_data,
-        type: 'box',
-        name: expression_data[i].genotype,
-        boxpoints: 'all',
-        hoveron: 'points',
-        pointpos: 0,
-        marker: {
-          color: GENOTYPE_COLORS[expression_data[i].genotype],
-          size: 8
-        }
-      }) 
+          y: expression_data[i].rpkm,  
+          x: x_data,
+          type: 'box',
+          name: expression_data[i].genotype + ' ' + expression_data[i].sex,
+          boxpoints: 'all',
+          hoveron: 'points',
+          pointpos: 0,
+          marker: {
+            color: GENOTYPE_COLORS[expression_data[i].genotype],
+            size: 8
+          }
+        })
+    
+
     }
+
+
+    console.log("Showing data to plot")
+    console.log(plot_data)  
 
     return plot_data
 
@@ -431,10 +538,14 @@ export class ExpressionPage extends Component {
               <ConsequenceFiltersWrapper>
                 <GenotypesControl
                   categorySelections={this.state}
-                  id="variant-filter"
+                  id="genotypes-filter"
                   onChange={this.onGenotypeFilter}
                 />
-
+                <SexControl
+                  categorySelections={this.state}
+                  id="sex-filter"
+                  onChange={this.onGenotypeFilter}
+                />
               </ConsequenceFiltersWrapper>
             </SettingsWrapper>
             <br /><br />

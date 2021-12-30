@@ -28,6 +28,7 @@ export const expressionType = new GraphQLObjectType({
     genotype: { type: GraphQLString },
     phenotype: { type: GraphQLString },
     time_point: { type: GraphQLString },
+    sex: { type: GraphQLString },
     rpkm: { type: new GraphQLList(GraphQLFloat) },
     //read_count: { type: new GraphQLList(GraphQLInt) },
   },
@@ -40,7 +41,7 @@ export const fetchExpressionDetails = async (ctx, gene_id) => {
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'transcript_expression_v2',
+    index: 'transcript_expression_v3',
     type: '_doc',
     size: 1,
     body: {
