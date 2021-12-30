@@ -183,7 +183,7 @@ class TrapGenePage extends Component {
   
    onSort = newSortKey => {
       this.setState(state => {
-        const { display_trap_data, sortKey } = this.state
+        const { gene_trap_data, sortKey } = this.state
 
         let newSortOrder = 'descending'
         if (newSortKey === sortKey) {
@@ -194,12 +194,12 @@ class TrapGenePage extends Component {
         // of filtering the input variants.
 
         
-        const sorted_gene_trap_data = sortGenes(display_trap_data, {
+        const sorted_gene_trap_data = sortGenes(gene_trap_data, {
           sortKey: newSortKey,
           sortOrder: newSortOrder,
         })        
         return {
-          display_trap_data: sorted_gene_trap_data,
+          gene_trap_data: sorted_gene_trap_data,
           sortKey: newSortKey,
           sortOrder: newSortOrder,
         }
@@ -270,7 +270,6 @@ class TrapGenePage extends Component {
 
         this.setState({ sortKey: defaultSortKey,
                         sortOrder: defaultSortOrder,
-                        display_trap_data: [...sorted_gene_trap_data],
                         gene_trap_data: sorted_gene_trap_data})
 
     }
@@ -288,7 +287,7 @@ class TrapGenePage extends Component {
     console.log("In Render and new state")
     console.log(this.state)
 
-    const display_data = this.filterData(this.state.display_trap_data)
+    const display_data = this.filterData(this.state.gene_trap_data)
 
 
 		return (

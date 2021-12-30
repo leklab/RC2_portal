@@ -339,7 +339,6 @@ class DiffExpressionPage extends Component {
                 options={[
                   { label: 'W7', value: 'W7'},
                   { label: 'W10', value: 'W10'},
-                  { label: 'W28', value: 'W28', disabled: true },                  
                 ]}
                 value={this.state.timepoint}
               />
