@@ -194,7 +194,7 @@ export class ExpressionPage extends Component {
     try{
       console.log("Requesting data")
       console.log(query)
-      const gene_data = await request("https://mageik.org/api", query)    
+      const gene_data = await request("https://pkdgenesandmetabolism.org/api", query)    
       console.log(gene_data)
       
       return gene_data
@@ -478,7 +478,7 @@ export class ExpressionPage extends Component {
       ...base_layout,
       yaxis: {
         ...base_y_axis,
-        title: 'RPKM'
+        title: 'TPM'
       }
     }
 
@@ -488,7 +488,7 @@ export class ExpressionPage extends Component {
         ...base_layout,
         yaxis: {
           ...base_y_axis,
-          title: 'log2(RPKM)',
+          title: 'log2(TPM)',
           type: 'log',
           dtick: Math.log10(2)
         }

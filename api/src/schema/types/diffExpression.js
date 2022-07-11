@@ -21,6 +21,7 @@ export const diffExpressionType = new GraphQLObjectType({
     sex: { type: GraphQLString },
     logfc: { type: GraphQLFloat },
     pvalue: { type: GraphQLFloat },
+    avg_expression: { type: GraphQLFloat },    
   },
 });
 
@@ -31,7 +32,7 @@ export const fetchDiffExpressionDetails = async (ctx, time_point,genotype1,genot
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'diff_expression_v2',
+    index: 'diff_expression_v5',
     type: '_doc',
     size: 1,
     body: {

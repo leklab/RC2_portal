@@ -122,6 +122,8 @@ const Label = styled.label`
 const LabelText = styled.span`
   padding: 0.375em 0.75em;
 `
+// disabled={category == 'combineSex' ? ( categorySelections['includeM'] && categorySelections['includeF'] ? false : true  ): false}
+// disabled={category == 'combineSex' ? true : false}
 
 export const SexControl = ({ categorySelections, id, onChange }) => (
   <SexControlWrapper>

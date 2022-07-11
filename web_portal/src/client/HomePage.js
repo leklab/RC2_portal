@@ -39,6 +39,9 @@ export default () => (
     <DocumentTitle />
     <HeadingContainer>
       {/* <GnomadHeading width="60%" /> */}
+
+      <img src="/MAGICK_logo.jpg" width="50%" height="50%"></img>
+
       <SubHeading>Metabolism And Genomics in Cystic Kidney (MAGICK)</SubHeading>
       <Searchbox width="80%" />
       <p>

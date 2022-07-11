@@ -71,7 +71,7 @@ class TrapGenePage extends Component {
     
     this.state = {
       gene_trap_data: null,
-      timepoint: 'W10',
+      timepoint: 'W7',
       sex: 'M',
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
@@ -225,7 +225,7 @@ class TrapGenePage extends Component {
         try{
           console.log("Requesting data")
           console.log(query)
-          const data = await request("https://mageik.org/api", query)    
+          const data = await request("https://pkdgenesandmetabolism.org/api", query)    
           console.log(data)
           
           return data.trap_genes
@@ -292,7 +292,7 @@ class TrapGenePage extends Component {
 
 		return (
         <Page>
-        <DocumentTitle title="TRAO Genes" />
+        <DocumentTitle title="TRAP Genes" />
         <PageHeading>TRAP Overlap Genes</PageHeading>
             <Wrapper>
               &nbsp; &nbsp; Timepoint: &nbsp; &nbsp;

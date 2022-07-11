@@ -16,8 +16,8 @@ const shapeDiffExpression = () => {
 	    	time_point: variantData.time_point,	    	
 	    	sex: variantData.sex,	    	
 	    	logfc: variantData.logfc,
-	    	pvalue: variantData.pvalue
-
+	    	pvalue: variantData.pvalue,
+	    	avg_expression: variantData.avg_expression
 	    }
   	}
 
