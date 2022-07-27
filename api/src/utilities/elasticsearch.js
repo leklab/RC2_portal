@@ -11,7 +11,7 @@ export async function fetchAllSearchResults(esClient, searchParams) {
 
   const size = searchParams.size || 1000
   const scroll = searchParams.scroll || '30s'
-
+  const rest_total_hits_as_int=true
   //console.log(searchParams)
 
   responseQueue.push(
@@ -19,6 +19,7 @@ export async function fetchAllSearchResults(esClient, searchParams) {
       ...searchParams,
       scroll,
       size,
+      rest_total_hits_as_int
     })
   )
 
@@ -28,7 +29,8 @@ export async function fetchAllSearchResults(esClient, searchParams) {
 
     //console.log(response)
 
-    if (allResults.length === response.hits.total) {
+    //if (allResults.length === response.hits.total) {
+    if (allResults.length === response.hits.total.value) {
       // eslint-disable-next-line no-await-in-loop
       await esClient.clearScroll({
         scrollId: response._scroll_id,

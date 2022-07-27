@@ -12,6 +12,8 @@ import {
 import {mouseType, fetchMouseDetails} from './types/mouse'
 import {expressionType, fetchExpressionDetails} from './types/expression'
 import {diffExpressionType, fetchDiffExpressionDetails} from './types/diffExpression'
+import {metaboliteExpressionType, fetchMetaboliteExpressionDetails} from './types/metaboliteExpression'
+
 import {trapGeneType, fetchTrapGeneDetails} from './types/trapGenes'
 
 import geneType, {
@@ -59,6 +61,7 @@ The fields below allow for different ways to look up RC2 data.
       },
     },
 
+
     diff_expression : {
       description: 'Look up Differential Expression by timepoint',
       type: new GraphQLList(diffExpressionType),
@@ -71,6 +74,21 @@ The fields below allow for different ways to look up RC2 data.
       },
       resolve: (obj, args, ctx) => {
         return fetchDiffExpressionDetails(ctx, args.time_point, args.genotype1, args.genotype2, args.sex)
+      },
+    },
+
+    metabolite_expression : {
+      description: 'Look up Differential Expression by timepoint',
+      type: new GraphQLList(metaboliteExpressionType),
+
+      args: {
+        time_point: { type: GraphQLString },
+        genotype1: { type: GraphQLString },
+        genotype2: { type: GraphQLString },        
+        sex: { type: GraphQLString }              
+      },
+      resolve: (obj, args, ctx) => {
+        return fetchMetaboliteExpressionDetails(ctx, args.time_point, args.genotype1, args.genotype2, args.sex)
       },
     },
 

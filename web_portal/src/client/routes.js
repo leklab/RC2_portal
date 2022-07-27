@@ -12,6 +12,7 @@ import ContactPage from './ContactPage'
 import DownloadsPage from './DownloadsPage'
 import ErrorBoundary from './ErrorBoundary'
 import FAQPage from './FAQPage'
+import LoginPage from './LoginPage'
 //import GenePage from './GenePage/GenePage'
 import HomePage from './HomePage'
 import PageNotFoundPage from './PageNotFoundPage'
@@ -28,7 +29,7 @@ import { ExpressionPage } from './ExpressionPage/ExpressionPage'
 import DiffExpressionPage from './DiffExpressionPage/DiffExpressionPage'
 import TrapGenePage from './TrapGenePage/TrapGenePage'
 import MetabolicFluxPage from './MetabolicFluxPage/MetabolicFluxPage'
-import MetabolomicsPage from './MetabolomicsPage/MetabolomicsPage'
+import MetabolomicsExpressionPage from './MetabolomicsPage/MetabolomicsPage'
 
 
 const MainPanel = styled.div`
@@ -74,7 +75,8 @@ const App = () => (
           <Route exact path="/TrapGenes" component={TrapGenePage} />
           <Route exact path="/diffExpression" component={DiffExpressionPage} />
           <Route exact path="/metabolicflux" component={MetabolicFluxPage} />
-          <Route exact path="/metabolomics" component={MetabolomicsPage} />
+          <Route exact path="/metabolomics" component={MetabolomicsExpressionPage} />
+          <Route exact path="/login" component={LoginPage} />
 
           <Route
             exact

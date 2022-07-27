@@ -16,6 +16,9 @@ import Tabs from './Tabs'
 
 import styled from 'styled-components'
 
+import Userfront from '@userfront/react'
+import { Redirect } from 'react-router-dom'
+
 
 const ControlSection = styled.div`
   margin-top: 1em;
@@ -131,6 +134,7 @@ const base_layout = {
   }
 }
 
+Userfront.init('8nw8qjpb')
 
 //const ExpressionPage = ({ variantId }) => {
 
@@ -194,10 +198,11 @@ export class ExpressionPage extends Component {
     try{
       console.log("Requesting data")
       console.log(query)
-      const gene_data = await request("https://pkdgenesandmetabolism.org/api", query)    
+      const gene_data = await request("http://34.125.140.232/api", query)    
       console.log(gene_data)
       
       return gene_data
+
 
       //this.setState({data: expression_data})
 
@@ -455,6 +460,13 @@ export class ExpressionPage extends Component {
   }
 
   render() {
+
+     if(!Userfront.accessToken()){
+        return(
+          <Redirect to={{pathname: '/login'}} />
+        )
+      }
+
 
     const { variantId } = this.props
     const { gene_data } = this.state

@@ -70,7 +70,8 @@
     "d3-fetch": "^2.0.0",
     "ramda": "^0.24.1",
     "css-loader": "^5.0.2",
-    "style-loader": "^2.0.0"
+    "style-loader": "^2.0.0",
+    "@userfront/react": "^0.3.1"
   },
   "scripts": {
     "lint:css": "stylelint './**/*.js'",

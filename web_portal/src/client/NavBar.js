@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Button } from '@broad/ui'
 
 import Searchbox from './Searchbox'
+import Userfront from '@userfront/react'
 
 const NavBarWrapper = styled.div`
   display: flex;
@@ -96,6 +97,8 @@ const Notice = styled.div`
   }
 `
 
+Userfront.init('8nw8qjpb')
+
 class NavBar extends Component {
   state = {
     isExpanded: false,
@@ -108,6 +111,17 @@ class NavBar extends Component {
   closeMenu = () => {
     this.setState({ isExpanded: false })
   }
+
+  logout = () => {
+
+    //Userfront.logout({redirect: false})
+    Userfront.logout()
+
+    //this.setState({ isExpanded: false })
+    //this.forceUpdate();
+  }
+
+
 
   render() {
     const { isExpanded } = this.state
@@ -173,6 +187,16 @@ class NavBar extends Component {
               <Link to="/faq" onClick={this.closeMenuIfOpen}>
                 FAQ
               </Link>
+            </li>
+            <li>
+              { !Userfront.accessToken() ?
+              (<Link to="/login" onClick={this.closeMenuIfOpen}>
+                Login
+              </Link>):
+              (<Link to="/login" onClick={this.logout}>
+                Logout
+              </Link>)            
+              }
             </li>
           </Menu>
         </NavBarWrapper>

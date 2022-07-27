@@ -36,17 +36,17 @@ export const expressionType = new GraphQLObjectType({
 
 export const fetchExpressionDetails = async (ctx, gene_id) => {
 
-  console.log("in here " + gene_id)
+  console.log("in fetchExpressionDetails " + gene_id)
 
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'transcript_expression_v6',
-    type: '_doc',
+    index: 'transcript_expression_v7',
+    //type: '_doc',
     size: 1,
     body: {
         query : {
-            query_string: {
+	    query_string: {
                 default_field: 'gene_id',
                 query: gene_id
             },
@@ -54,6 +54,7 @@ export const fetchExpressionDetails = async (ctx, gene_id) => {
     },
   })
 
+  //console.log(hits)
   //const doc = response.hits._source[0]
   console.log(hits)
   

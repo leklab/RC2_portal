@@ -10,6 +10,10 @@ import throttle from 'lodash.throttle'
 import DETable from './DEList/DETable'
 import sortGenes from './DEList/sortGenes'
 
+import Userfront from '@userfront/react'
+import { Redirect } from 'react-router-dom'
+
+
 /* stylelint-disable block-no-empty */
 const ControlWrapper = styled.span``
 /* stylelint-enable block-no-empty */
@@ -56,7 +60,7 @@ const base_layout = {
   }
 }
 
-
+Userfront.init('8nw8qjpb')
 
 class DiffExpressionPage extends Component {
 
@@ -145,7 +149,7 @@ class DiffExpressionPage extends Component {
         try{
           console.log("Requesting data")
           console.log(query)
-          const expression_data = await request("https://pkdgenesandmetabolism.org/api", query)    
+          const expression_data = await request("http://34.125.140.232/api", query)    
           //console.log(expression_data)
           
           return expression_data.diff_expression
@@ -242,6 +246,13 @@ class DiffExpressionPage extends Component {
 
 
 	render() {
+
+
+         if(!Userfront.accessToken()){
+            return(
+              <Redirect to={{pathname: '/login'}} />
+            )
+          }
 
         if(!this.mounted){
           console.log("DiffExpressionTab not mounted")

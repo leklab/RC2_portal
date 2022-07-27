@@ -9,6 +9,9 @@ import DocumentTitle from '../DocumentTitle'
 import TCACycle from './TCACycle'
 import './metabolicflux.css'
 
+import Userfront from '@userfront/react'
+import { Redirect } from 'react-router-dom'
+
 /* stylelint-disable block-no-empty */
 const ControlWrapper = styled.span``
 /* stylelint-enable block-no-empty */
@@ -35,6 +38,9 @@ const fluxHover = {
   stroke:'#f68d6f',
   cursor: 'grab'
 }
+
+Userfront.init('8nw8qjpb')
+
 
 class MetabolicFluxPage extends Component {
 
@@ -87,6 +93,12 @@ class MetabolicFluxPage extends Component {
 
 
 	render() {
+
+    if(!Userfront.accessToken()){
+      return(
+        <Redirect to={{pathname: '/login'}} />
+      )
+    }
 
 
 		return (
