@@ -230,7 +230,7 @@ class TrapGenePage extends Component {
         try{
           console.log("Requesting data")
           console.log(query)
-          const data = await request("http://34.125.140.232/api", query)    
+          const data = await request("https://pkdgenesandmetabolism.org/api", query)    
           console.log(data)
           
           return data.trap_genes

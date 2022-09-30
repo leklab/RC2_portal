@@ -173,7 +173,7 @@ export class MetabolitePage extends Component {
     try{
       console.log("Requesting data")
       console.log(query)
-      const metabolite_data = await request("http://34.125.140.232/api", query)    
+      const metabolite_data = await request("https://pkdgenesandmetabolism.org/api", query)    
       console.log(metabolite_data)
       
       return metabolite_data
@@ -201,7 +201,7 @@ export class MetabolitePage extends Component {
     try{
       console.log("Requesting data")
       console.log(query)
-      const metabolite_record = await request("http://34.125.140.232/api", query)    
+      const metabolite_record = await request("https://pkdgenesandmetabolism.org/api", query)    
       console.log(metabolite_record)
       
       return metabolite_record

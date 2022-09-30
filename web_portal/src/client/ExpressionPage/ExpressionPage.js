@@ -198,7 +198,7 @@ export class ExpressionPage extends Component {
     try{
       console.log("Requesting data")
       console.log(query)
-      const gene_data = await request("http://34.125.140.232/api", query)    
+      const gene_data = await request("https://pkdgenesandmetabolism.org/api", query)    
       console.log(gene_data)
       
       return gene_data

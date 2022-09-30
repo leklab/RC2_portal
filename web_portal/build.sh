@@ -13,7 +13,7 @@ rm -rf dist
 #export GA_TRACKING_ID="G-95EMC38H9B"
 #export GNOMAD_API_URL=${GNOMAD_API_URL:-"http://genomes.sfari.org:8007"}
 #export GNOMAD_API_URL=${GNOMAD_API_URL:-"http://54.91.148.17:8007"}
-export GNOMAD_API_URL=${GNOMAD_API_URL:-"http://34.125.140.232/api"}
+export GNOMAD_API_URL=${GNOMAD_API_URL:-"https://pkdgenesandmetabolism.org/api"}
 #export MAGEIK_API_URL=${MAGEIK_API_URL:-"http://104.155.163.167:4000"}
 
 export NODE_ENV=${NODE_ENV:-"production"}

@@ -19,7 +19,7 @@ export async function fetchAllSearchResults(esClient, searchParams) {
       ...searchParams,
       scroll,
       size,
-      rest_total_hits_as_int
+      //rest_total_hits_as_int
     })
   )
 
@@ -29,8 +29,8 @@ export async function fetchAllSearchResults(esClient, searchParams) {
 
     //console.log(response)
 
-    //if (allResults.length === response.hits.total) {
-    if (allResults.length === response.hits.total.value) {
+    if (allResults.length === response.hits.total) {
+    //if (allResults.length === response.hits.total.value) {
       // eslint-disable-next-line no-await-in-loop
       await esClient.clearScroll({
         scrollId: response._scroll_id,

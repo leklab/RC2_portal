@@ -144,7 +144,7 @@ class MetabolomicsExpressionPage extends Component {
         try{
           console.log("Requesting data")
           console.log(query)
-          const expression_data = await request("http://34.125.140.232/api", query)    
+          const expression_data = await request("https://pkdgenesandmetabolism.org/api", query)    
           console.log(expression_data)
           
           return expression_data.metabolite_expression
