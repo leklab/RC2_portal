@@ -32,6 +32,9 @@ import MetabolicFluxPage from './MetabolicFluxPage/MetabolicFluxPage'
 import MetabolomicsExpressionPage from './MetabolomicsPage/MetabolomicsPage'
 
 
+import { MetabolitePage } from './MetabolitePage/MetabolitePage'
+
+
 const MainPanel = styled.div`
   width: 100%;
 `
@@ -67,6 +70,22 @@ const App = () => (
               )
             }}
           />          
+
+          <Route
+            exact
+            path="/metabolite/:comp_id"
+            render={({ history, location, match }) => {
+              const queryParams = queryString.parse(location.search)
+              return (
+                <MetabolitePage
+                  comp_id={match.params.comp_id}
+                />
+              )
+            }}
+          />          
+
+
+
           <Route exact path="/about" component={AboutPage} />
           <Route exact path="/downloads" component={DownloadsPage} />
           <Route exact path="/terms" component={TermsPage} />

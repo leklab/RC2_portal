@@ -45,7 +45,7 @@ export const fetchMetaboliteExpressionDetails = async (ctx, time_point,genotype1
             //{term: { genotype1: genotype1}},
             //{term: { genotype2: genotype2}},
             //{term: { sex: sex}},
-            { range: { [`pvalue`]: { lt: 0.05 } } },
+            { range: { [`pvalue`]: { gt: -1} } },
           ]
         },
       },

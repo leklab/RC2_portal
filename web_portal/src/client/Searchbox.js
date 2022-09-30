@@ -34,7 +34,7 @@ export default withRouter(props => {
           search: queryString.stringify(nextParams),
         })
       }}
-      placeholder="Search by gene"
+      placeholder="Search by gene or metabolite"
     />
   )
 })

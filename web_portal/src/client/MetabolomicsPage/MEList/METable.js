@@ -74,9 +74,9 @@ const columns = [
     heading: 'Metabolite',
     grow: 0,
     isSortable: false,
-    minWidth: 150,
+    minWidth: 365,
     render: (metabolite, key) => (
-    <Link className="grid-cell-content" target="_blank" to={`/awesome?query=${metabolite.biochemical}`}>
+    <Link className="grid-cell-content" target="_blank" to={`/awesome?query=${metabolite.comp_id}`}>
     {metabolite.biochemical}
     </Link>
     ),
@@ -86,15 +86,15 @@ const columns = [
     heading: 'Expression',
     grow: 0,
     isSortable: false,
-    minWidth: 150,
+    minWidth: 75,
     render: truncateNum,
   },
   {
     key: 'fc',
-    heading: 'Log Fold Change',
+    heading: 'log(FC)',
     grow: 0,
     isSortable: true,
-    minWidth: 150,
+    minWidth: 60,
     render: logNum,
   },
   {
@@ -102,7 +102,7 @@ const columns = [
     heading: 'Adj P value',
     grow: 0,
     isSortable: true,
-    minWidth: 150,
+    minWidth: 100,
     render: renderExponentialNumberCell,
   },
 ]

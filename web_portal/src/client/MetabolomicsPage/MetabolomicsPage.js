@@ -134,6 +134,7 @@ class MetabolomicsExpressionPage extends Component {
         const query = `{
           metabolite_expression(time_point: "${time_point}", genotype1: "${genotype1}", genotype2: "${genotype2}", sex: "${sex}"){
             biochemical
+            comp_id
             pvalue
             fc
             avg_exp
@@ -377,8 +378,8 @@ class MetabolomicsExpressionPage extends Component {
 
                 }}
                 options={[
-                  { label: 'Normal', value: 'WT'},
-                  { label: 'Pkd1_KO', value: 'KO', disabled: true }, //disabled: !(this.state.group1 === 'WT') ,
+                  { label: 'Normal', value: 'WT', disabled: true},
+                  { label: 'Pkd1_KO', value: 'KO', disabled: !(this.state.group1 === 'WT')}, //disabled: !(this.state.group1 === 'WT') ,
                   { label: 'Pkd1_Kif3a_KO', value: 'DKO', disabled: true  },
                 ]}
                 value={this.state.group2}
@@ -405,6 +406,8 @@ class MetabolomicsExpressionPage extends Component {
             </Wrapper>
             <br />
             Note: Positive Log(Fold Change) indicates up-regulation in Group1
+            <br />
+            FC = Fold Change
 
         </Page>
 		)

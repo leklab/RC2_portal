@@ -99,15 +99,18 @@ export const resolveSearchResults = async (ctx, query) => {
 
   //ENSMUSG
   if (/^ensmusg[0-9]/i.test(query)) {
-    const matchingGenes = await ctx.database.mouse_db
-      .collection('genes')
-      .find({ gene_id: startsWithQuery })
+    const matchingGenesMeta = await ctx.database.mouse_db
+      .collection('search_terms')
+      .find({ id: startsWithQuery })
       .limit(5)
       .toArray()
 
-    return matchingGenes.map(gene => ({
-      label: `${gene.gene_id} (${gene.gene_name_upper})`,
-      url: `/expression/${gene.gene_name}`,
+    return matchingGenesMeta.map(item => ({
+      label: `${item.id} (${item.name_upper})`,
+      url: 
+        item.isGene
+          ? `/expression/${item.name}`
+          : `/metabolite/${item.id}`,
     }))
   }
 
@@ -125,28 +128,31 @@ export const resolveSearchResults = async (ctx, query) => {
     }))
   }
 
-  const matchingGenes = await ctx.database.mouse_db
-    .collection('genes')
+  const matchingGenesMeta = await ctx.database.mouse_db
+    .collection('search_terms')
     .find({
-      $or: [{ gene_name_upper: startsWithQuery }, { other_names: startsWithQuery }],
+      $or: [{ name_upper: startsWithQuery }, { id: startsWithQuery, isGene: false}],
     })
     .limit(5)
     .toArray()
 
-  const geneNameCounts = {}
-  matchingGenes.forEach(gene => {
-    if (geneNameCounts[gene.gene_name_upper] === undefined) {
-      geneNameCounts[gene.gene_name_upper] = 0
+  const geneMetaNameCounts = {}
+  matchingGenesMeta.forEach(item => {
+    if (geneMetaNameCounts[item.name_upper] === undefined) {
+      geneMetaNameCounts[item.name_upper] = 0
     }
-    geneNameCounts[gene.gene_name_upper] += 1
+    geneMetaNameCounts[item.name_upper] += 1
   })
 
-  const geneResults = matchingGenes.map(gene => ({
+  const geneMetaResults = matchingGenesMeta.map(item => ({
     label:
-      geneNameCounts[gene.gene_name_upper] > 1
-        ? `${gene.gene_name} (${gene.gene_id})`
-        : gene.gene_name,
-    url: `/expression/${gene.gene_name}`,
+      geneMetaNameCounts[item.name_upper] > 1
+        ? `${item.name} (${item.id})`
+        : item.name,
+    url: 
+      item.isGene
+        ? `/expression/${item.name}`
+        : `/metabolite/${item.id}`,
   }))
 
   /*
@@ -172,5 +178,5 @@ export const resolveSearchResults = async (ctx, query) => {
   }
   */
 
-  return geneResults
+  return geneMetaResults
 }

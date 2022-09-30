@@ -13,13 +13,20 @@ import {mouseType, fetchMouseDetails} from './types/mouse'
 import {expressionType, fetchExpressionDetails} from './types/expression'
 import {diffExpressionType, fetchDiffExpressionDetails} from './types/diffExpression'
 import {metaboliteExpressionType, fetchMetaboliteExpressionDetails} from './types/metaboliteExpression'
-
+import {metaboliteRecordType, fetchRecordDetails} from './types/metaboliteRecord'
 import {trapGeneType, fetchTrapGeneDetails} from './types/trapGenes'
 
 import geneType, {
   lookupGeneByGeneId,
   lookupGeneByName,
 } from './types/gene'
+
+
+
+import metaboliteType, {
+  lookupMetaboliteByCompId,
+} from './types/metabolite'
+
 
 /*
 import transcriptType, {
@@ -78,7 +85,7 @@ The fields below allow for different ways to look up RC2 data.
     },
 
     metabolite_expression : {
-      description: 'Look up Differential Expression by timepoint',
+      description: 'Look up metabolite expression',
       type: new GraphQLList(metaboliteExpressionType),
 
       args: {
@@ -89,6 +96,18 @@ The fields below allow for different ways to look up RC2 data.
       },
       resolve: (obj, args, ctx) => {
         return fetchMetaboliteExpressionDetails(ctx, args.time_point, args.genotype1, args.genotype2, args.sex)
+      },
+    },
+
+    metabolite_record : {
+      description: 'Look up metabolite expression by comp id',
+      type: metaboliteRecordType,
+
+      args: {
+        comp_id: { type: GraphQLString }         
+      },
+      resolve: (obj, args, ctx) => {
+        return fetchRecordDetails(ctx, args.comp_id)
       },
     },
 
@@ -105,6 +124,22 @@ The fields below allow for different ways to look up RC2 data.
       },
     },
 
+   
+    metabolite: {
+      description: 'Look up metabolite by comp ID',
+      type: metaboliteType,
+      args: {
+        comp_id: { type: GraphQLString },
+      },
+      resolve: (obj, args, ctx) => {
+        if (args.comp_id) {
+          return lookupMetaboliteByCompId(ctx.database.mouse_db, args.comp_id)
+        }
+        return 'No lookup found'
+      },
+    },
+    
+    
 
     gene: {
       description: 'Look up variant data by gene name. Example: Actn4.',
