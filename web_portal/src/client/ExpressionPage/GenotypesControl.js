@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
-const categories = ['includeWT', 'includePKD1_KO', 'includeDKO']
+const categories = ['includeWT', 'includePKD1_KO', 'includeDKO','includeWT_Pkd2', 'includePkd2_KO', 'includePkd2_Kif3a_KO']
 
 //#5da4d6
 //#ff8f0e
@@ -13,13 +13,20 @@ const categories = ['includeWT', 'includePKD1_KO', 'includeDKO']
 const categoryColors = {
   includePKD1_KO: '#5DA4D6',
   includeDKO: '#FF8F0E',
-  includeWT: '#2CA064'
+  includeWT: '#2CA064',
+  includePkd2_KO: '#5DA4D6',
+  includePkd2_Kif3a_KO: '#FF8F0E',
+  includeWT_Pkd2: '#2CA064'
+
 }
 
 const categoryLabels = {
   includePKD1_KO: 'Pkd1_KO',
   includeDKO: 'Pkd1_Kif3a_KO',
-  includeWT: 'Normal'
+  includeWT: 'Normal',
+  includePkd2_KO: 'Pkd2_KO',
+  includePkd2_Kif3a_KO: 'Pkd2_Kif3a_KO',
+  includeWT_Pkd2: 'Normal_Pkd2',  
 }
 
 // The max-width styles here are based on the filter settings
@@ -149,6 +156,9 @@ export const GenotypesControl = ({ categorySelections, id, onChange }) => (
               includePKD1_KO: false,
               includeDKO: false,
               includeWT: false,
+              includePkd2_KO: false,
+              includePkd2_Kif3a_KO: false,
+              includeWT_Pkd2: false,
               [category]: true,
             })
           }
@@ -165,6 +175,9 @@ GenotypesControl.propTypes = {
     PKD1_KO: PropTypes.bool.isRequired,
     DKO: PropTypes.bool.isRequired,
     WT: PropTypes.bool.isRequired,
+    Pkd2_KO: PropTypes.bool.isRequired,
+    Pkd2_Kif3a_KO: PropTypes.bool.isRequired,
+    WT_Pkd2: PropTypes.bool.isRequired,    
   }).isRequired,
   id: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

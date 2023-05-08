@@ -99,7 +99,10 @@ const GENOTYPE_COLORS = {
 const GENOTYPE_COLORS = {
   PKD1_KO: 'rgb(93, 164, 214)',
   DKO: 'rgb(255, 144, 14)',
-  WT: 'rgb(44, 160, 101)'  
+  WT: 'rgb(44, 160, 101)',
+  Pkd2_KO: 'rgb(93, 164, 214)',
+  Pkd2_Kif3a_KO: 'rgb(255, 144, 14)',
+  WT_Pkd2: 'rgb(44, 160, 101)'
 }
 
 
@@ -149,6 +152,9 @@ export class ExpressionPage extends Component {
     includeWT: true,
     includeDKO: true,
     includePKD1_KO: true,
+    includeWT_Pkd2: true,
+    includePkd2_Kif3a_KO: true,
+    includePkd2_KO: true,    
     includeM: true,
     includeF: true,
     combineSex: false,
@@ -266,6 +272,18 @@ export class ExpressionPage extends Component {
       return true
     }
 
+    else if(this.state.includePkd2_KO && data.genotype.localeCompare("Pkd2_KO") == 0){
+      return true
+    }
+
+    else if(this.state.includePkd2_Kif3a_KO && data.genotype.localeCompare("Pkd2_Kif3a_KO") == 0){
+      return true
+    }
+
+    else if(this.state.includeWT_Pkd2 && data.genotype.localeCompare("WT_Pkd2") == 0){
+      return true
+    }
+
     else{
       return false
     }
@@ -340,7 +358,7 @@ export class ExpressionPage extends Component {
           return 0
         }
       }
-      
+      /*
       else if(a.genotype != b.genotype){
         if(a.genotype == 'WT' && b.genotype == 'PKD1_KO'){
           return -1
@@ -365,6 +383,52 @@ export class ExpressionPage extends Component {
         }
         
       }
+      */
+
+      else if(a.genotype != b.genotype){
+        if(a.genotype == 'WT'){
+          return -1
+        }
+        else if(b.genotype == 'WT'){
+          return 1
+        }
+        else if(a.genotype == 'PKD1_KO'){
+          return -1
+        }
+        else if(b.genotype == 'PKD1_KO'){
+          return 1
+        }
+        else if(a.genotype == 'DKO'){
+          return -1
+        }
+        else if(b.genotype == 'DKO'){
+          return 1
+        }
+
+        else if(a.genotype == 'WT_Pkd2'){
+          return -1
+        }
+        else if(b.genotype == 'WT_Pkd2'){
+          return 1
+        }
+        else if(a.genotype == 'Pkd2_KO'){
+          return -1
+        }
+        else if(b.genotype == 'Pkd2_KO'){
+          return 1
+        }
+        else if(a.genotype == 'Pkd2_Kif3a_KO'){
+          return -1
+        }
+        else if(b.genotype == 'Pkd2_Kif3a_KO'){
+          return 1
+        }
+
+        else{
+          return 0
+        }        
+      }
+
       else{
         if(a.sex == 'M' && b.sex == 'F'){
           return -1
