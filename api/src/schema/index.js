@@ -116,11 +116,12 @@ The fields below allow for different ways to look up RC2 data.
       type: new GraphQLList(trapGeneType),
 
       args: {
+        mouse_model: { type: GraphQLString }, 
         time_point: { type: GraphQLString },
         sex: { type: GraphQLString }              
       },
       resolve: (obj, args, ctx) => {
-        return fetchTrapGeneDetails(ctx, args.time_point, args.sex)
+        return fetchTrapGeneDetails(ctx, args.mouse_model, args.time_point, args.sex)
       },
     },
 

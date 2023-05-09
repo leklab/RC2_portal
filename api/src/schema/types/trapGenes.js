@@ -16,6 +16,7 @@ export const trapGeneType = new GraphQLObjectType({
   fields: {
     gene_id: { type: GraphQLString },
     gene_name: { type: GraphQLString },
+    mouse_model: { type: GraphQLString },
     time_point: { type: GraphQLString },
     sex: { type: GraphQLString },
     sko_expr: { type: GraphQLFloat },
@@ -26,20 +27,21 @@ export const trapGeneType = new GraphQLObjectType({
   },
 });
 
-export const fetchTrapGeneDetails = async (ctx, time_point,sex) => {
+export const fetchTrapGeneDetails = async (ctx, mouse_model,time_point,sex) => {
 
   console.log("in here " + time_point)
 
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'trap_genes_v3',
+    index: 'trap_genes_v4',
     type: '_doc',
     size: 1,
     body: {
       query : {
         bool: {
           filter: [
+            {term: { mouse_model: mouse_model}},
             {term: { time_point: time_point}},
             {term: { sex: sex}}
           ]

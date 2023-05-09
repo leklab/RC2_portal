@@ -11,6 +11,7 @@ const shapeTrapGenes = () => {
 	    return {
 	    	gene_id: variantData.gene_id,
 	    	gene_name: variantData.gene_name,
+	    	mouse_model: variantData.mouse_model,
 	    	time_point: variantData.time_point,	    	
 	    	sex: variantData.sex,	    	
 	    	sko_expr: variantData.sko_expr,	    	

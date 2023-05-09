@@ -78,6 +78,7 @@ class TrapGenePage extends Component {
       gene_trap_data: null,
       timepoint: 'W7',
       sex: 'M',
+      mouse_model: 'Pkd1',
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
       includeUp: true,
@@ -212,9 +213,9 @@ class TrapGenePage extends Component {
     }
 
 
-    fetchTrapGenes = async(time_point,sex) => {
+    fetchTrapGenes = async(mouse_model, time_point,sex) => {
         const query = `{
-          trap_genes(time_point: "${time_point}", sex: "${sex}"){
+          trap_genes(mouse_model: "${mouse_model}", time_point: "${time_point}", sex: "${sex}"){
             gene_name
             gene_id
             direction
@@ -246,7 +247,7 @@ class TrapGenePage extends Component {
     async componentDidMount() {
         //componentDidMount() {
 
-        const gene_trap_data = await this.fetchTrapGenes(this.state.timepoint,this.state.sex)
+        const gene_trap_data = await this.fetchTrapGenes(this.state.mouse_model,this.state.timepoint,this.state.sex)
 
         this.mounted = true
         //this.setState({gene_trap_data: gene_trap_data})
@@ -311,12 +312,12 @@ class TrapGenePage extends Component {
                 id="timepoint-selection"
                 onChange={ t => {
                     this.setState({ timepoint: t })
-                    this.fetchTrapGenes(t,this.state.sex).then( data =>{
+                    this.fetchTrapGenes(this.state.mouse_model,t,this.state.sex).then( data =>{
                         this.updateData(data)
                       })
                 }}
                 options={[
-                  { label: 'W7', value: 'W7'},
+                  { label: 'W7', value: 'W7', disabled: (this.state.mouse_model == 'Pkd2') },
                   { label: 'W10', value: 'W10'},
                 ]}
                 value={this.state.timepoint}
@@ -326,7 +327,7 @@ class TrapGenePage extends Component {
                 id="sex-selection"
                 onChange={ s => {
                     this.setState({ sex: s })
-                    this.fetchTrapGenes(this.state.timepoint,s).then( data =>{
+                    this.fetchTrapGenes(this.state.mouse_model,this.state.timepoint,s).then( data =>{
                         this.updateData(data)
                       })
                 }}
@@ -336,8 +337,30 @@ class TrapGenePage extends Component {
                 ]}
                 value={this.state.sex}
               />
-            </Wrapper>
-        
+
+              &nbsp; &nbsp; Mouse Model: &nbsp; &nbsp;
+              <SegmentedControl
+                id="mouse-model-selection"
+                
+                onChange={ m => {
+                    //this.setState({ mouse_model: m, group1: `WT_${m}`, group2: `${m}_KO`, timepoint: 'W10'})
+                    
+                    this.setState({ mouse_model: m, timepoint: 'W10', sex: 'M'})
+
+                    this.fetchTrapGenes(m,this.state.timepoint,this.state.sex).then( data =>{
+                        this.updateData(data)
+                      })
+                    
+                }}
+                
+                options={[
+                  { label: 'Pkd1', value: 'Pkd1'},
+                  { label: 'Pkd2', value: 'Pkd2'}
+                ]}
+                value={this.state.mouse_model}
+              />
+
+            </Wrapper>        
         <br /><br />
         <DETable
           sortKey={this.state.sortKey}
