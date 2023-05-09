@@ -98,10 +98,11 @@ class DiffExpressionPage extends Component {
 
     this.state = {
       expression_data: null,
-      group1: 'WT',
-      group2: 'KO',
+      group1: 'WT_Pkd1',
+      group2: 'Pkd1_KO',
       timepoint: 'W7',
       sex: 'M',
+      mouse_model: 'Pkd1',
       sortKey: defaultSortKey,
       sortOrder: defaultSortOrder,
       visibleGeneWindow: [0, 14],
@@ -310,9 +311,9 @@ class DiffExpressionPage extends Component {
                     console.log("g1 group1: "+g1)                    
                     console.log("group2: "+this.state.group2)
 
-                    if(g1 === 'KO'){
-                      this.setState({ group2: 'DKO' })
-                      this.fetchExpression(this.state.timepoint,g1,'DKO',this.state.sex).then( data =>{
+                    if(g1 === `${this.state.mouse_model}_KO`){
+                      this.setState({ group2: `${this.state.mouse_model}_Kif3a_KO` })
+                      this.fetchExpression(this.state.timepoint,g1,`${this.state.mouse_model}_Kif3a_KO`,this.state.sex).then( data =>{
                           //this.setState({expression_data: data})
                           this.updateData(data)
                         })
@@ -329,9 +330,9 @@ class DiffExpressionPage extends Component {
                     
                 }}
                 options={[
-                  { label: 'Normal', value: 'WT'},
-                  { label: 'Pkd1_KO', value: 'KO' },
-                  { label: 'Pkd1_Kif3a_KO', value: 'DKO', disabled: true },                  
+                  { label: 'Normal', value: `WT_${this.state.mouse_model}`},
+                  { label: `${this.state.mouse_model}_KO`, value: `${this.state.mouse_model}_KO` },
+                  { label: `${this.state.mouse_model}_Kif3a_KO`, value: `${this.state.mouse_model}_Kif3a_KO`, disabled: true },                  
                 ]}
                 value={this.state.group1}
               />
@@ -349,7 +350,7 @@ class DiffExpressionPage extends Component {
 
                 }}
                 options={[
-                  { label: 'W7', value: 'W7'},
+                  { label: 'W7', value: 'W7', disabled: (this.state.mouse_model == 'Pkd2')},
                   { label: 'W10', value: 'W10'},
                 ]}
                 value={this.state.timepoint}
@@ -370,6 +371,29 @@ class DiffExpressionPage extends Component {
                 ]}
                 value={this.state.sex}
               />
+              &nbsp; &nbsp; Mouse Model: &nbsp; &nbsp;
+              <SegmentedControl
+                id="mouse-model-selection"
+                
+                onChange={ m => {
+                    this.setState({ mouse_model: m, group1: `WT_${m}`, group2: `${m}_KO`, timepoint: 'W10'})
+                    
+                    this.fetchExpression('W10',`WT_${m}`,`${m}_KO`,this.state.sex).then( data =>{
+                        //this.setState({expression_data: data})
+                        this.updateData(data)
+                      })
+                    
+                }}
+                
+
+                options={[
+                  { label: 'Pkd1', value: 'Pkd1'},
+                  { label: 'Pkd2', value: 'Pkd2'}
+                ]}
+                value={this.state.mouse_model}
+              />
+
+
             </Wrapper>
             <Wrapper>  
               Group 2: &nbsp; &nbsp; <SegmentedControl
@@ -385,16 +409,17 @@ class DiffExpressionPage extends Component {
                     // const expression_data = await this.fetchExpression("W7",this.state.group1,this.state.group2)
                     //this.setState({expression_data: expression_data})
 
-                    this.fetchExpression("W7",this.state.group1,g2,this.state.sex).then( data =>{
+                    //this.fetchExpression("W7",this.state.group1,g2,this.state.sex).then( data =>{
+                    this.fetchExpression(this.state.timepoint,this.state.group1,g2,this.state.sex).then( data =>{
                         //this.setState({expression_data: data})
                         this.updateData(data)
                       })
 
                 }}
                 options={[
-                  { label: 'Normal', value: 'WT', disabled: true},
-                  { label: 'Pkd1_KO', value: 'KO', disabled: !(this.state.group1 === 'WT') },
-                  { label: 'Pkd1_Kif3a_KO', value: 'DKO' },                  
+                  { label: 'Normal', value: `WT_${this.state.mouse_model}`, disabled: true},
+                  { label: `${this.state.mouse_model}_KO`, value: `${this.state.mouse_model}_KO`, disabled: !(this.state.group1 === `WT_${this.state.mouse_model}`) },
+                  { label: `${this.state.mouse_model}_Kif3a_KO`, value: `${this.state.mouse_model}_Kif3a_KO` },                  
                 ]}
                 value={this.state.group2}
               />

@@ -32,7 +32,7 @@ export const fetchDiffExpressionDetails = async (ctx, time_point,genotype1,genot
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'diff_expression_v5',
+    index: 'diff_expression_v6',
     type: '_doc',
     size: 1,
     body: {
