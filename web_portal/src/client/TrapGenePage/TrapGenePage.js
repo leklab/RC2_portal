@@ -231,7 +231,8 @@ class TrapGenePage extends Component {
         try{
           console.log("Requesting data")
           console.log(query)
-          const data = await request("https://pkdgenesandmetabolism.org/api", query)    
+          const data = await request("https://pkdgenesandmetabolism.org/api", query)
+          console.log("Showing data from API query")    
           console.log(data)
           
           return data.trap_genes
@@ -267,11 +268,17 @@ class TrapGenePage extends Component {
         const defaultSortKey = 'sko_expr'
         const defaultSortOrder = 'descending'
 
-        
+        console.log('In UpdateData')
+        console.log('Before sorting')
+        console.log(gene_trap_data)
+
         const sorted_gene_trap_data = sortGenes(gene_trap_data, {
           sortKey: defaultSortKey,
           sortOrder: defaultSortOrder,
         })
+
+        console.log('After sorting')
+        console.log(sorted_gene_trap_data)
         
 
         this.setState({ sortKey: defaultSortKey,
@@ -345,9 +352,14 @@ class TrapGenePage extends Component {
                 onChange={ m => {
                     //this.setState({ mouse_model: m, group1: `WT_${m}`, group2: `${m}_KO`, timepoint: 'W10'})
                     
+                    console.log("Changing state mouse_model")
                     this.setState({ mouse_model: m, timepoint: 'W10', sex: 'M'})
 
-                    this.fetchTrapGenes(m,this.state.timepoint,this.state.sex).then( data =>{
+                    // Set state hasn't changed the state yet. So if current state of timepoint is at 'W7' this will error
+                    //this.fetchTrapGenes(m,this.state.timepoint,this.state.sex).then( data =>{
+                    this.fetchTrapGenes(m,'W10','M').then( data =>{
+                        console.log("In mouse_model state change")
+                        console.log(data)
                         this.updateData(data)
                       })
                     
