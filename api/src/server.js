@@ -18,7 +18,7 @@ import express from 'express'
 import pcgcSchema from './schema'
 import cors from 'cors'
 import compression from 'compression'
-
+import Redis from 'ioredis'
 
 const app = express()
 app.use(compression())
@@ -59,6 +59,20 @@ var root = {
       host: "http://localhost:9200",
     })
 
+    /*
+    const redisConnectionConfig =
+      process.env.NODE_ENV === 'development'
+        ? { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT }
+        : {
+            sentinels: [
+              { host: 'redis-sentinel', port: 26379 },
+              { host: 'redis-sentinel', port: 26379 },
+            ],
+            name: 'mymaster',
+          }
+    */
+    const redis = new Redis({host: 'localhost', port: 6379})
+
     app.use(
       [/^\/$/, /^\/api\/?$/],
       graphQLHTTP({
@@ -68,7 +82,8 @@ var root = {
         context: {
           database: {
             elastic,
-            mouse_db: mongoClient.db()
+            mouse_db: mongoClient.db(),
+            redis
           },
         },
       })

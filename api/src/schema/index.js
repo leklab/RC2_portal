@@ -27,6 +27,7 @@ import metaboliteType, {
   lookupMetaboliteByCompId,
 } from './types/metabolite'
 
+import { withCache } from '../utilities/redis'
 
 /*
 import transcriptType, {
@@ -79,8 +80,12 @@ The fields below allow for different ways to look up RC2 data.
         genotype2: { type: GraphQLString },        
         sex: { type: GraphQLString }              
       },
+
       resolve: (obj, args, ctx) => {
-        return fetchDiffExpressionDetails(ctx, args.time_point, args.genotype1, args.genotype2, args.sex)
+        console.log("In diff_expression resolve")
+        return withCache(ctx, `diff_exp:${args.genotype1}_${args.genotype2}_${args.time_point}_${args.sex}`, async () => {
+          return fetchDiffExpressionDetails(ctx, args.time_point, args.genotype1, args.genotype2, args.sex)
+        })
       },
     },
 
