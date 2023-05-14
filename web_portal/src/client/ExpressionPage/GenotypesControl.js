@@ -10,23 +10,32 @@ const categories = ['includeWT', 'includePKD1_KO', 'includeDKO','includeWT_Pkd2'
 //#ff8f0e
 //#2ca064
 
-const categoryColors = {
-  includePKD1_KO: '#5DA4D6',
-  includeDKO: '#FF8F0E',
-  includeWT: '#2CA064',
-  includePkd2_KO: '#5DA4D6',
-  includePkd2_Kif3a_KO: '#FF8F0E',
-  includeWT_Pkd2: '#2CA064'
 
+// 00cc96
+// 636efa
+// ef553b
+
+// b6e880
+// ab63fa
+// ffa15a
+
+
+const categoryColors = {
+  includeWT: '#00cc96',
+  includePKD1_KO: '#636efa',
+  includeDKO: '#ef553b',
+  includeWT_Pkd2: '#b6e880',
+  includePkd2_KO: '#ab63fa',
+  includePkd2_Kif3a_KO: '#ffa15a'
 }
 
 const categoryLabels = {
   includePKD1_KO: 'Pkd1_KO',
   includeDKO: 'Pkd1_Kif3a_KO',
-  includeWT: 'Normal',
+  includeWT: 'Non-cystic (Pkd1)',
   includePkd2_KO: 'Pkd2_KO',
-  includePkd2_Kif3a_KO: 'Pkd2_Kif3a_KO',
-  includeWT_Pkd2: 'Normal_Pkd2',  
+  includePkd2_Kif3a_KO: 'Pkd2_Ift88_KO',
+  includeWT_Pkd2: 'Non-cystic (Pkd2)',  
 }
 
 // The max-width styles here are based on the filter settings

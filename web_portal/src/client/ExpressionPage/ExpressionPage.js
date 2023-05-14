@@ -96,13 +96,23 @@ const GENOTYPE_COLORS = {
 }
 */
 
+// colors from: https://plotly.com/python/discrete-color/#color-sequences-in-plotly-express
+
+// 00cc96
+// 636efa
+// ef553b
+
+// b6e880
+// ab63fa
+// ffa15a
+
 const GENOTYPE_COLORS = {
-  PKD1_KO: 'rgb(93, 164, 214)',
-  DKO: 'rgb(255, 144, 14)',
-  WT: 'rgb(44, 160, 101)',
-  Pkd2_KO: 'rgb(93, 164, 214)',
-  Pkd2_Kif3a_KO: 'rgb(255, 144, 14)',
-  WT_Pkd2: 'rgb(44, 160, 101)'
+  WT: 'rgb(0, 204, 150)',
+  PKD1_KO: 'rgb(99, 110, 250)',
+  DKO: 'rgb(239, 85, 59)',
+  WT_Pkd2: 'rgb(182, 232, 128)',
+  Pkd2_KO: 'rgb(171, 99, 250)',
+  Pkd2_Kif3a_KO: 'rgb(255, 161, 90)'
 }
 
 
@@ -508,7 +518,8 @@ export class ExpressionPage extends Component {
           pointpos: 0,
           marker: {
             color: GENOTYPE_COLORS[expression_data[i].genotype],
-            size: 8
+            size: 8,
+            symbol: expression_data[i].sex == 'F' ? 'circle-open' : 'circle'
           }
         })
     
