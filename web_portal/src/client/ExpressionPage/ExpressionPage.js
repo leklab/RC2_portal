@@ -535,13 +535,13 @@ export class ExpressionPage extends Component {
   }
 
   render() {
-
+    /*
      if(!Userfront.accessToken()){
         return(
           <Redirect to={{pathname: '/login'}} />
         )
       }
-
+    */
 
     const { variantId } = this.props
     const { gene_data } = this.state

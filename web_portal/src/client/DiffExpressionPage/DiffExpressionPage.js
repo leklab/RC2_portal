@@ -248,13 +248,13 @@ class DiffExpressionPage extends Component {
 
 	render() {
 
-
+        /*
          if(!Userfront.accessToken()){
             return(
               <Redirect to={{pathname: '/login'}} />
             )
           }
-
+        */
         if(!this.mounted){
           console.log("DiffExpressionTab not mounted")
           return(            

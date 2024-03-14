@@ -467,12 +467,13 @@ export class MetabolitePage extends Component {
 
   render() {
 
+    /*
      if(!Userfront.accessToken()){
         return(
           <Redirect to={{pathname: '/login'}} />
         )
       }
-
+    */
 
     const { comp_id } = this.props
     const { metabolite_data, metabolite_record } = this.state
