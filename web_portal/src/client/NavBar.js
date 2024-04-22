@@ -137,12 +137,12 @@ class NavBar extends Component {
           <Menu isExpanded={isExpanded}>
             <li>
               <Link to="/trapGenes" onClick={this.closeMenu}>
-                TRAP Genes
+                CDCA Pattern Genes
               </Link>
             </li>
             <li>
               <Link to="/diffExpression" onClick={this.closeMenu}>
-                Gene Expression
+                Differential Gene Expression
               </Link>
             </li>
             <li>

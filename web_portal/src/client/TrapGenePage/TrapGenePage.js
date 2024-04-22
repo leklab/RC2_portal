@@ -311,8 +311,8 @@ class TrapGenePage extends Component {
 
 		return (
         <Page>
-        <DocumentTitle title="TRAP Genes" />
-        <PageHeading>TRAP Overlap Genes</PageHeading>
+        <DocumentTitle title="CDCA Pattern Genes" />
+        <PageHeading>CDCA Pattern Genes</PageHeading>
             <Wrapper>
               &nbsp; &nbsp; Timepoint: &nbsp; &nbsp;
               <SegmentedControl
