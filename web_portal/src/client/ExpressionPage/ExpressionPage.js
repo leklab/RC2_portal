@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Plot from 'react-plotly.js'
 import { request } from "graphql-request"
 
-import { Page, PageHeading, Checkbox, SegmentedControl } from '@broad/ui'
+import { Page, PageHeading, Checkbox, SegmentedControl, ExternalLink } from '@broad/ui'
 import DocumentTitle from '../DocumentTitle'
 
 import { ModelTranscript } from './ModelTranscript'
@@ -81,6 +81,10 @@ const Wrapper = styled.div`
       margin-bottom: 1em;
     }
   }
+`
+const PageContent = styled.div`
+  width: 70%;
+  text-align: justify;
 `
 
 
@@ -633,7 +637,7 @@ export class ExpressionPage extends Component {
                 />
               </ConsequenceFiltersWrapper>
             </SettingsWrapper>
-            <br /><br />
+            
 
 
         {/*<Tabs>
@@ -704,10 +708,17 @@ export class ExpressionPage extends Component {
         </Tabs>*/}
 
 
-        
-
-
-
+        <PageContent>
+        <h3>Overview of TRAP RNA-seq study design</h3>
+        <img src="/TRAP_RNAseq.jpg" width="80%" height="80%"></img><br />
+        For more details, please refer to the <ExternalLink href="/about">about page.</ExternalLink>
+        <br /><br />
+        <h3>Citation</h3>
+        When using this data, please cite the following reference.<br />
+        Zhang, C., Rehman, M., Tian, X., Pei, S.L.C., Gu, J., Bell, T.A., Dong, K., Tham, M.S., Cai, Y., Wei, Z., et al. (2024). Glis2 is an early effector 
+        of polycystin signaling and a target for therapy in polycystic kidney disease. <ExternalLink href="https://www.nature.com/articles/s41467-024-48025-6">Nat. Commun. 15, 3698. 10.1038/s41467-024-48025-6.</ExternalLink>
+        <br /><br />
+        </PageContent>        
       </Page>
     )
   }

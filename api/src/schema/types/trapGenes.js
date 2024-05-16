@@ -34,7 +34,7 @@ export const fetchTrapGeneDetails = async (ctx, mouse_model,time_point,sex) => {
   //const response = await ctx.database.elastic.search({
 
   const hits = await fetchAllSearchResults(ctx.database.elastic, {
-    index: 'trap_genes_v4',
+    index: 'trap_genes_v5',
     type: '_doc',
     size: 1,
     body: {

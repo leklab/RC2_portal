@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 import Plot from 'react-plotly.js'
 import { request } from "graphql-request"
-import { Page, PageHeading, SegmentedControl } from '@broad/ui'
+import { Page, PageHeading, SegmentedControl, ExternalLink } from '@broad/ui'
 import DocumentTitle from '../DocumentTitle'
 
 //import throttle from 'lodash.throttle'
@@ -54,6 +54,10 @@ const SettingsWrapper = styled.div`
 
 const ConsequenceFiltersWrapper = styled.div`
   margin-bottom: 1em;
+`
+const PageContent = styled.div`
+  width: 70%;
+  text-align: justify;
 `
 
 Userfront.init('8nw8qjpb')
@@ -324,7 +328,7 @@ class TrapGenePage extends Component {
                       })
                 }}
                 options={[
-                  { label: 'W7', value: 'W7', disabled: (this.state.mouse_model == 'Pkd2') },
+                  { label: 'W7', value: 'W7'},
                   { label: 'W10', value: 'W10'},
                 ]}
                 value={this.state.timepoint}
@@ -396,10 +400,23 @@ class TrapGenePage extends Component {
             />            
           </ConsequenceFiltersWrapper>
         </SettingsWrapper>
+        
+        
+        <PageContent>
+        <h3>CDCA data set comparisons</h3>
+        The "Cilia Dependent Cyst Activation (CDCA) pattern" in the data set comparisons is premised on the biological understanding that <u>cyst-relevant</u> signals in <i>Pkd</i>-only single knockouts, 
+        which are destined to form cysts, differ in the <u>same direction</u> from both Non-cystic and the respective <i>Pkd</i>+cilia double knockout. Furthermore, signals 
+        relevant to cyst formation should <u>not</u> differ between the Non_cystic and Pkd+cilia double knockouts since the latter are protected from cyst formation 
+        despite the inactivation of a <i>Pkd</i> gene. For more details, please refer to the <ExternalLink href="/about">about page.</ExternalLink><br /><br />        
+        <img src="/CDCA_figure.jpg" width="80%" height="80%"></img>
         <br /><br />
-
-
-
+        <h3>Citation</h3>
+        When using this data, please cite the following reference.<br />
+        Zhang, C., Rehman, M., Tian, X., Pei, S.L.C., Gu, J., Bell, T.A., Dong, K., Tham, M.S., Cai, Y., Wei, Z., et al. (2024). Glis2 is an early effector 
+        of polycystin signaling and a target for therapy in polycystic kidney disease. <ExternalLink href="https://www.nature.com/articles/s41467-024-48025-6">Nat. Commun. 15, 3698. 10.1038/s41467-024-48025-6.</ExternalLink>
+        <br /><br />
+        </PageContent>
+        
         </Page>
 		)
 	}

@@ -55,7 +55,8 @@ export default () => (
     <p>
     The interactive data within this website are from mouse models based on inactivation of genes associated with Autosomal dominant polycystic kidney 
     disease (ADPKD). This comprehensive large data sets include specific changes in gene expression and metabolic function in the 
-    subset of cells in the kidney that will give rise to the cysts that ultimately destroy kidney function.
+    subset of cells in the kidney that will give rise to the cysts that ultimately destroy kidney function. 
+    For more details, please refer to the <ExternalLink href="/about">about page.</ExternalLink><br /><br />
     </p>
   </HomePage>
 )

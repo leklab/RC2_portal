@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 import Plot from 'react-plotly.js'
 import { request } from "graphql-request"
-import { Page, PageHeading, SegmentedControl } from '@broad/ui'
+import { Page, PageHeading, SegmentedControl, ExternalLink } from '@broad/ui'
 import DocumentTitle from '../DocumentTitle'
 
 import throttle from 'lodash.throttle'
@@ -34,6 +34,10 @@ const Wrapper = styled.div`
   }
 `
 
+const PageContent = styled.div`
+  width: 70%;
+  text-align: justify;
+`
 
 const base_layout = {
   autosize: false,
@@ -350,7 +354,7 @@ class DiffExpressionPage extends Component {
 
                 }}
                 options={[
-                  { label: 'W7', value: 'W7', disabled: (this.state.mouse_model == 'Pkd2')},
+                  { label: 'W7', value: 'W7'},
                   { label: 'W10', value: 'W10'},
                 ]}
                 value={this.state.timepoint}
@@ -443,6 +447,18 @@ class DiffExpressionPage extends Component {
             <br />
             Note: Positive Log(Fold Change) indicates up-regulation in Group1
 
+
+            <PageContent>
+            <h3>Overview of TRAP RNA-seq study design</h3>
+            <img src="/TRAP_RNAseq.jpg" width="80%" height="80%"></img><br />
+            For more details, please refer to the <ExternalLink href="/about">about page.</ExternalLink>
+            <br /><br />
+            <h3>Citation</h3>
+            When using this data, please cite the following reference.<br />
+            Zhang, C., Rehman, M., Tian, X., Pei, S.L.C., Gu, J., Bell, T.A., Dong, K., Tham, M.S., Cai, Y., Wei, Z., et al. (2024). Glis2 is an early effector 
+            of polycystin signaling and a target for therapy in polycystic kidney disease. <ExternalLink href="https://www.nature.com/articles/s41467-024-48025-6">Nat. Commun. 15, 3698. 10.1038/s41467-024-48025-6.</ExternalLink>
+            <br /><br />
+            </PageContent>        
         </Page>
 		)
 	}
